@@ -1,18 +1,12 @@
-$.post()
-
-
-/*
-
-// database stuff (incomplete. doesn't work)
-
-var email = "";
-var password = "";
-
-var http = require('http');
-http.createServer().listen(8000);
-
-// print entered info into console
-console.log("Email: ", email,
-    "\nPassword: ", password);
-
-*/
+$('#loginform').submit(function(e){
+    e.preventDefault();
+    console.log("Action performed");
+    $.ajax({
+        url:'/login/submit',
+        type:'post',
+        data:$('#loginform').serialize(),
+        success:function(){
+            console.log("Successfully sent");
+        }
+    });
+});
