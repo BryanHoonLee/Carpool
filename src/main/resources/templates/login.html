@@ -20,7 +20,7 @@
 <a href="register.html">Don't Have An Account? Register HERE</a>
 
 <div id="divStandard">
-    <div class="logMessage" th:if="${param.error}">Cannot login</div>
+    <div class="logMessage" th:if="${param.error}">Email or password is incorrect.</div>
     <div class="logMessage" th:if="${param.loggedin}">You are already logged in!</div>
     <div class="logMessage" th:if="${param.logout}">You have successfully logged out.</div>
     <form name="loginform" action="/login" method="POST">
