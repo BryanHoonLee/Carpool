@@ -18,7 +18,7 @@ public class HomeController {
 
     @GetMapping({"/", "/index", "/home"})
     public String index() {
-        return "redirect:/home.html";
+        return "redirect:/index.html";
     }
 
     @GetMapping("/login")
@@ -27,43 +27,8 @@ public class HomeController {
         return "login";
     }
 
-    private String fakeEmail = "email@email.com";
-    private String fakePass = "password";
-
-    @PostMapping(value = "/login/submit", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<?> loginHandler(
-            @Valid @RequestBody User loginData) {
-
-        AjaxResponseBody result = new AjaxResponseBody();
-
-        if (loginData.getEmail().equals(fakeEmail) && loginData.getPassword().equals(fakePass))
-            result.setMsg("/home");
-        else
-            result.setMsg("/login?error");
-
-        return ResponseEntity.ok(result);
+    @GetMapping("/test")
+    public String test() {
+        return "test_authentication";
     }
-
-    /*
-    @PostMapping(value = "/login/submit", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<?> loginHandler(
-                //@Valid @RequestBody User loginData,
-                User loginData,
-                Model model ) {
-
-        AjaxResponseBody result = new AjaxResponseBody();
-
-        if (loginData.getEmail().equals("")) {
-            return ResponseEntity.ok("Email cannot be empty.");
-        }
-
-        if (loginData.getEmail().equals("testme@gmail.com") && loginData.getPassword().equals("password")) {
-            result.setMsg("Exists!");
-        }
-        else {
-            result.setMsg("Email or password is incorrect.");
-        }
-
-        return ResponseEntity.ok(result);
-    }*/
 }

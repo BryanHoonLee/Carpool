@@ -7,6 +7,11 @@
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link type="text/javascript" href="js/login.js">
+    <style>
+        .logMessage {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -15,9 +20,10 @@
 <a href="register.html">Don't Have An Account? Register HERE</a>
 
 <div id="divStandard">
-    <div th:if="${param.error}">Cannot login</div>
-    <form name = "loginform" action = "/login/submit" method = "POST">
-        <input type = "text" name = "email" placeholder = "Your email.."/>
+    <div class="logMessage" th:if="${param.error}">Cannot login</div>
+    <div class="logMessage" th:if="${param.loggedin}">You are now logged in!</div>
+    <form name = "loginform" action = "/login" method = "POST">
+        <input type = "text" name = "username" placeholder = "Your email.."/>
         <input type = "password" name = "password" placeholder = "Your password.."/>
         <input type = "submit" value = "Submit"/>
         <input type="hidden"
