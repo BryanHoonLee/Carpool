@@ -27,14 +27,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
-                .antMatchers("/", "/index", "/home", "/home.html").permitAll()
+                .antMatchers("/", "/index", "/home", "/index.html").permitAll()
                 .antMatchers("/test").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
                 .loginPage("/login").permitAll()
                 .failureUrl("/login?error").permitAll()
-                .defaultSuccessUrl("/login?loggedin", true);
+                .defaultSuccessUrl("/", true)
+                .and()
+            .logout()
+                .logoutUrl("/logout").permitAll()
+                .logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true);
+
     }
 
     @Autowired
