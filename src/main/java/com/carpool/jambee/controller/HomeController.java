@@ -10,23 +10,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping({"/", "/index", "/home"})
-    public String index() {
+    public String index(Model model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (principal instanceof UserDetails) {
-            // If someone is logged in
-            String username = ((UserDetails)principal).getUsername();
-        } else {
-            // If no one is logged in (also with default name "anonymousUser")
-            String username = principal.toString();
+        if (principal instanceof UserDetails) { // If someone is logged in
+            model.addAttribute("isLoggedIn", true);
+        } else { // If no one is logged in (also with default name "anonymousUser")
+            model.addAttribute("isLoggedIn", false);
         }
 
         return "index";
     }
 
     @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("message", "hi");
+    public String login() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails)
+            return "redirect:/home";
+
         return "login";
     }
 
