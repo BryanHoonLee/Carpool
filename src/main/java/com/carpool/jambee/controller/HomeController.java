@@ -13,14 +13,13 @@ public class HomeController {
     public String index() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
+            // If someone is logged in
+            String username = ((UserDetails)principal).getUsername();
         } else {
-            username = principal.toString();
+            // If no one is logged in (also with default name "anonymousUser")
+            String username = principal.toString();
         }
-
-        System.out.println(username);
 
         return "index";
     }

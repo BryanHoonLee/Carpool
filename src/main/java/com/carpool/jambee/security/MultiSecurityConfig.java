@@ -17,10 +17,13 @@ public class MultiSecurityConfig {
     @Configuration
     @Order(1)
     public static class SessionSecurityConfig extends WebSecurityConfigurerAdapter {
-        @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .authorizeRequests()
+                    .antMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
+                    .antMatchers("/", "/index", "/home", "/index.html").permitAll()
+                    .antMatchers("/test").hasRole("USER")
+                    .anyRequest().authenticated()
                     .and()
                 .formLogin()
                     .loginPage("/login").permitAll()
@@ -35,22 +38,12 @@ public class MultiSecurityConfig {
     }
 
     @Configuration
-    @Order(2)
+    @Order(Integer.MAX_VALUE - 1)
     public static class GeneralSecurityConfig extends WebSecurityConfigurerAdapter {
         @Bean
         @Override
         public AuthenticationManager authenticationManagerBean() throws Exception {
             return super.authenticationManagerBean();
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                .authorizeRequests()
-                    .antMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
-                    .antMatchers("/", "/index", "/home", "/index.html").permitAll()
-                    .antMatchers("/test").hasRole("ADMIN")
-                    .anyRequest().authenticated();
         }
     }
 
@@ -61,7 +54,9 @@ public class MultiSecurityConfig {
             auth.inMemoryAuthentication()
                     .withUser("user").password("password").roles("USER")
                     .and()
-                    .withUser("admin").password("password").roles("ADMIN");
+                    .withUser("admin").password("password").roles("ADMIN")
+                    .and()
+                    .withUser("anonymousUser").password("password").roles("ADMIN");
         }
 
         @SuppressWarnings("deprecation")

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">>
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <div th:insert="~{fragments/header :: navbar}"></div>
     <h1>Home Page</h1>
     <form action="/logout" method="POST" >
         <input type="submit" value="Sign out" />
