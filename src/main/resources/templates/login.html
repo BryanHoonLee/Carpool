@@ -6,41 +6,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/base-styles.css" />
     <link rel="stylesheet" type="text/css" href="/css/fonts.css" />
+    <link rel="stylesheet" type="text/css" href="/css/login.css" />
     <link type="text/javascript" href="js/login.js">
-    <style>
-        .logMessageContainer {
-            width: 100%;
-            height: 40pt;
-
-            margin-bottom: 8pt;
-
-            border: solid 3px;
-            border-radius: 14px;
-        }
-        .logMessageContainer.good {
-            background-color: #adff2f33;
-            border-color: #adff2f77;
-        }
-        .logMessageContainer.bad {
-            background-color: #b2222233;
-            border-color: #b2222266;
-        }
-        p.logMessage {
-            font-size: 13pt;
-
-            text-align: center;
-            vertical-align: middle;
-        }
-    </style>
 </head>
 
 <body>
 
 <h1>Login</h1>
 
-<div id="divStandard">
+<div id="loginContainer">
     <div th:if="${param.error}" class="logMessageContainer bad">
         <p class="logMessage">Email or password is incorrect.</p>
     </div>
