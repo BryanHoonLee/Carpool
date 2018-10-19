@@ -22,16 +22,6 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails)
-            return "redirect:/home";
-
-        return "login";
-    }
-
     @GetMapping("/test")
     public String test() {
         return "test_authentication";

@@ -1,7 +1,8 @@
 body {
+    margin: 0px;
+    padding: 0px;
     background-color: white;
     min-width: 500px;
-    margin: 0;
 }
 
 h1 {
@@ -34,19 +35,17 @@ a:active {
 }
 
 nav {
-    padding-block-end: 50px;
-    padding-top: 7px;
-    border-bottom: 2px solid;
-    background-color: lightgreen;
+    position: absolute;
+    margin: 0;
+    width: 100%;
+    top: 0;
+    padding-top: 10px;
+    border-bottom: 2px solid lightgray;
 }
 
 nav td {
     padding-left: 10px;
     padding-right: 10px;
-}
-
-.min-margin {
-    margin: 15px;
 }
 
 .navbar-left {
