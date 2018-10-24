@@ -13,28 +13,28 @@
 
 <body>
 
-<h1>Login</h1>
+    <h1>Login</h1>
 
-<div id="loginContainer">
-    <div th:if="${param.error}" class="logMessageContainer bad">
-        <p class="logMessage">Email or password is incorrect.</p>
+    <div id="loginContainer">
+        <div th:if="${param.error}" class="logMessageContainer bad">
+            <p class="logMessage">Email or password is incorrect.</p>
+        </div>
+        <div th:if="${param.logout}" class="logMessageContainer good">
+            <p class="logMessage">You have successfully logged out.</p>
+        </div>
+
+        <form name="loginform" action="/login" method="POST">
+            <input type="text" name="username" placeholder="Your email.."/>
+            <input type="password" name="password" placeholder="Your password.."/>
+            <input type="submit" value="Sign In"/>
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"
+            />
+        </form>
     </div>
-    <div th:if="${param.logout}" class="logMessageContainer good">
-        <p class="logMessage">You have successfully logged out.</p>
-    </div>
 
-    <form name="loginform" action="/login" method="POST">
-        <input type="text" name="username" placeholder="Your email.."/>
-        <input type="password" name="password" placeholder="Your password.."/>
-        <input type="submit" value="Sign In"/>
-        <input type="hidden"
-               th:name="${_csrf.parameterName}"
-               th:value="${_csrf.token}"
-        />
-    </form>
-</div>
-
-<p style="text-align: center"><a href="/register">Don't Have An Account? Register HERE</a></p>
+    <p style="text-align: center"><a href="/register">Don't Have An Account? Register HERE</a></p>
 
 </body>
 
