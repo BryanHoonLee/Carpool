@@ -17,8 +17,12 @@
     <h1>Add a New Route</h1>
 
     <form>
-        <input type="text" placeholder="City Commuting from">
-        <input type="text" placeholder="City Commuting to">
+        <p>Going from:</p>
+        <input type="text" placeholder="City">
+        <input type="text" placeholder="State (CA, NY, etc.)">
+        <p>Going to:</p>
+        <input type="text" placeholder="City">
+        <input type="text" placeholder="State">
         <br>
         <p>Days of Commute:</p>
         <input type="checkbox" name="day1" value="Monday"> Monday
@@ -32,13 +36,15 @@
 
         <input type="text" placeholder="Contact Email">
         <input type="text" placeholder="Contact Number (optional)">
+        <input type="text" placeholder="Notes for searcher to see(optional)">
 
         <p>Preferred Compensation:</p>
         <select>
-            <option value="nothing">Nothing :)</option>
-            <option value="fuel">Gas Money</option>
+            <option value="money">Money</option>
+            <option value="fuel">Fuel</option>
             <option value="food">Food</option>
-            <option value="carpool">Drive half the days</option>
+            <option value="carpool">Carpool</option>
+            <option value="nothing">Nothing</option>
         </select>
         <input type="submit" value="Submit">
     </form>
