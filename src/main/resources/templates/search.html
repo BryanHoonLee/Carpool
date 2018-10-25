@@ -15,9 +15,30 @@
 
 <body>
 
-    <h1>Search</h1>
+    <h1>Search for a Route</h1>
 
+    <form>
+        <input type="text" placeholder="City">
+        <input type="text" placeholder="State (CA, NY, etc.)">
+        <br>
+        <p>Days of Commute:</p>
+        <input type="checkbox" name="day1" value="Monday"> Monday
+        <input type="checkbox" name="day2" value="Tuesday"> Tuesday
+        <input type="checkbox" name="day3" value="Wednesday"> Wednesday
+        <input type="checkbox" name="day4" value="Thursday"> Thursday
+        <input type="checkbox" name="day5" value="Friday"> Friday
+        <input type="checkbox" name="day6" value="Friday"> Saturday
+        <input type="checkbox" name="day7" value="Friday"> Sunday
+        <p>Search Within:</p>
 
+        <select>
+            <option value="one">1 mile</option>
+            <option value="three">3 miles</option>
+            <option value="five">5 miles</option>
+            <option value="ten">10 miles</option>
+        </select>
+        <input type="submit" value="Search">
+    </form>
 
 </body>
 
