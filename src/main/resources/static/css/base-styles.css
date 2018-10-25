@@ -36,11 +36,21 @@ a:active {
 
 nav {
     position: absolute;
+    display: table;
     margin: 0;
     width: 100%;
     top: 0;
-    padding-top: 10px;
+    padding-top: 15px;
     border-bottom: 2px solid lightgray;
+}
+
+nav .left {
+    float: left;
+}
+
+nav .right {
+    float: right;
+    display: table-cell;
 }
 
 nav td {
@@ -50,11 +60,14 @@ nav td {
 
 .navbar-left {
     float: left;
+    /* Temporary padding to act like image */
     padding: 20px;
 }
 
 .navbar-right {
     float: right;
+    display: table;
+    vertical-align: middle;
 }
 
 input[type=submit].nav-button {

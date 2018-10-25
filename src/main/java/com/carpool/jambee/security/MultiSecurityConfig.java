@@ -22,7 +22,7 @@ public class MultiSecurityConfig {
                 .authorizeRequests()
                     .antMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
                     .antMatchers("/", "/index", "/home", "/index.html").permitAll()
-                    .antMatchers("/register").permitAll()
+                    .antMatchers("/register", "/register/submit").permitAll()
                     .antMatchers("/test").hasRole("USER")
                     .anyRequest().authenticated()
                     .and()
