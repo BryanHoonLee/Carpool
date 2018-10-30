@@ -43,8 +43,8 @@ public class DbSeeder implements CommandLineRunner {
                 "Food"
         );
 
-//        List<UserData> topics = Arrays.asList(userData, userData2);
-//        this.userDataRepository.saveAll(topics);
+        List<UserData> topics = Arrays.asList(userData, userData2);
+        this.userDataRepository.saveAll(topics);
     }
 
 }
