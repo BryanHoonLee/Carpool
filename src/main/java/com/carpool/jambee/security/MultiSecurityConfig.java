@@ -23,6 +23,7 @@ public class MultiSecurityConfig {
                     .antMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
                     .antMatchers("/", "/index", "/home", "/index.html").permitAll()
                     .antMatchers("/register", "/register/submit").permitAll()
+                    .antMatchers("/search", "/add").permitAll()
                     .antMatchers("/test").hasRole("USER")
                     .anyRequest().authenticated()
                     .and()
