@@ -3,8 +3,6 @@ package com.carpool.jambee.mongodb.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Email;
-
 @Document (collection = "userData")
 public class UserData {
     @Id

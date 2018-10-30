@@ -6,7 +6,8 @@ import com.carpool.jambee.mongodb.repository.UserDataRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.Email;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class DbSeeder implements CommandLineRunner {
@@ -41,6 +42,9 @@ public class DbSeeder implements CommandLineRunner {
                 "No Peanuts",
                 "Food"
         );
+
+//        List<UserData> topics = Arrays.asList(userData, userData2);
+//        this.userDataRepository.saveAll(topics);
     }
 
 }
