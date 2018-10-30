@@ -1,11 +1,16 @@
 package com.carpool.jambee.controller;
 
+import com.carpool.jambee.model.NewUser;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 public class UserLoginAndRegisterController {
@@ -30,10 +35,28 @@ public class UserLoginAndRegisterController {
         return "register";
     }
 
-    @PostMapping("/register")
-    public ModelAndView registerHandler(ModelAndView modelAndView) {
-        modelAndView.addObject("registered", true);
-        modelAndView.setViewName("register");
-        return modelAndView;
+    @PostMapping(value = "/register/submit",
+                 consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String registerHandler(
+            Model model,
+            @Valid NewUser newUser) {
+
+        System.out.println(newUser.getFirstName());
+        System.out.println(newUser.getLastName());
+        System.out.println(newUser.getEmail());
+        System.out.println(newUser.getPassword());
+        System.out.println(newUser.getMatchingPassword());
+
+        //String redirectLocation = "confirm";
+        String redirectLocation = "redirect:/home";
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (newUser.getPassword().equals(newUser.getMatchingPassword())) {
+            model.addAttribute("mistmatchedPasswords", true);
+            redirectLocation = "register";
+        }
+
+        return redirectLocation;
     }
 }
