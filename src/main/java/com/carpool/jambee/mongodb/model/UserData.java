@@ -8,7 +8,7 @@ public class UserData {
     @Id
     private String id;
     private Address startingAddress;
-    private Address endAddress;
+    private Address destinationAddress;
     private boolean daysOfWeek[];
     private String email;
     private String phoneNumber;
@@ -18,10 +18,10 @@ public class UserData {
     public UserData() {
     }
 
-    public UserData(Address startingAddress, Address endAddress, boolean[] daysOfWeek, String email, String phoneNumber,
+    public UserData(Address startingAddress, Address destinationAddress, boolean[] daysOfWeek, String email, String phoneNumber,
                     String additionalNotes, String preferredCompensation) {
         this.startingAddress = startingAddress;
-        this.endAddress = endAddress;
+        this.destinationAddress = destinationAddress;
         this.daysOfWeek = daysOfWeek;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -45,12 +45,12 @@ public class UserData {
         this.startingAddress = startingAddress;
     }
 
-    public Address getEndAddress() {
-        return endAddress;
+    public Address getDestinationAddress() {
+        return destinationAddress;
     }
 
-    public void setEndAddress(Address endAddress) {
-        this.endAddress = endAddress;
+    public void setDestinationAddress(Address destinationAddress) {
+        this.destinationAddress = destinationAddress;
     }
 
     public boolean[] getDaysOfWeek() {
