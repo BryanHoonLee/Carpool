@@ -37,6 +37,9 @@ public class NewRouteController {
         userData.setStartingAddress(startingAddress);
         userData.setDestinationAddress(destinationAddress);
 
+        if (!userData.getStartingAddress().getCity().equals(""))
+            model.addAttribute("cityData", userData.getStartingAddress().getCity());
+
         return "redirect:/add";
     }
 
