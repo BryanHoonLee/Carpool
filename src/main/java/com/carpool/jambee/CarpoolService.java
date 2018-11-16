@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 @SpringBootApplication
 public class CarpoolService {
@@ -18,6 +19,6 @@ public class CarpoolService {
 
         // At this point, we need to store the city data into the database
 
-        SpringApplication.run(CarpoolService.class, args);
+        //SpringApplication.run(CarpoolService.class, args);
     }
 }
