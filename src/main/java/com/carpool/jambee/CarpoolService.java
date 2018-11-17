@@ -19,6 +19,6 @@ public class CarpoolService {
 
         // At this point, we need to store the city data into the database
 
-        //SpringApplication.run(CarpoolService.class, args);
+        SpringApplication.run(CarpoolService.class, args);
     }
 }

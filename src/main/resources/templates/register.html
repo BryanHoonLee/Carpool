@@ -17,10 +17,18 @@
     <h1>Register</h1>
 
     <div id="loginContainer">
-        <div th:if="${mistmatchedPasswords}" class="logMessageContainer bad">
-            <p class="logMessage">Passwords do not match.</p>
+        <div th:if="${registerError}" class="logMessageContainer bad">
+            <p th:if="${mismatchedPasswords}" class="logMessage">
+                Passwords do not match.
+            </p>
+            <p th:if="${notValidEmail}" class="logMessage">
+                Email is invalid.
+            </p>
+            <p th:if="${notEduEmail}" class="logMessage">
+                Sorry. We only support .edu email addresses for now.
+            </p>
         </div>
-        <form action="/register/submit" method="POST">
+        <form action="/register" method="POST">
             <input type="text" name="firstName" placeholder="First Name">
             <input type="text" name="lastName" placeholder="Last Name">
             <input type="text" name="email" placeholder=".edu email address">
