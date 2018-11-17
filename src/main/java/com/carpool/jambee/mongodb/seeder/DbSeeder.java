@@ -1,27 +1,34 @@
 package com.carpool.jambee.mongodb.seeder;
 
+import com.carpool.jambee.CityData;
+import com.carpool.jambee.CsvReader;
 import com.carpool.jambee.mongodb.model.Address;
 import com.carpool.jambee.mongodb.model.UserData;
+import com.carpool.jambee.mongodb.repository.CityDataRepository;
 import com.carpool.jambee.mongodb.repository.UserDataRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Component
 public class DbSeeder implements CommandLineRunner {
     private UserDataRepository userDataRepository;
+    private CityDataRepository cityDataRepository;
 
-    public DbSeeder(UserDataRepository userDataRepository){
+    public DbSeeder(UserDataRepository userDataRepository, CityDataRepository cityDataRepository){
         this.userDataRepository = userDataRepository;
-
+        this.cityDataRepository = cityDataRepository;
     }
 
     // When spring boot app starts, the command line runner will be executed automatically by spring
     @Override
     public void run(String... args) throws Exception {
 
+        CsvReader csvReader = new CsvReader();
+        List<CityData> cityDataList = csvReader.readFile("classpath:uscities.csv");
         // D U M M Y DATA
         UserData userData = new UserData(
                 new Address("Temecula", "CA"),
@@ -45,6 +52,10 @@ public class DbSeeder implements CommandLineRunner {
 
         List<UserData> topics = Arrays.asList(userData, userData2);
         this.userDataRepository.saveAll(topics);
+
+        this.cityDataRepository.deleteAll();
+        this.cityDataRepository.saveAll(cityDataList);
+
     }
 
 }

@@ -11,11 +11,11 @@ import java.util.Random;
 public class CarpoolService {
 
     public static void main (String[] args) {
-        CsvReader citiesCSV = new CsvReader();
+        //CsvReader citiesCSV = new CsvReader();
 
         // City data provided by "https://simplemaps.com/data/us-cities"
         //   We are REQUIRED to put that URL somewhere on our website
-        ArrayList<CityData> citiesData = citiesCSV.readFile("classpath:uscities.csv");
+       // ArrayList<CityData> citiesData = citiesCSV.readFile("classpath:uscities.csv");
 
         // At this point, we need to store the city data into the database
 

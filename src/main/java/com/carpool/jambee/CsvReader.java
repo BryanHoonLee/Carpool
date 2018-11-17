@@ -60,7 +60,7 @@ public class CsvReader {
             // See 12 below
             city.setTimezone(information[13]);
             // See 14 below
-            city.setId(Integer.parseInt(information[15]));
+            city.setId(information[15]);
 
 
             if (information[12].equals("True"))

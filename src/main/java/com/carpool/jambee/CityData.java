@@ -1,8 +1,13 @@
 package com.carpool.jambee;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "cityData")
 public class CityData {
+    @Id
+    private     String id;
     private  String city;
     private  String cityASCII;
     private  String stateID;
@@ -18,7 +23,7 @@ public class CityData {
     private boolean incorporated;
     private  String timezone;
     private   int[] zips;
-    private     int id;
+
 
     public CityData() {
         city = null;
@@ -36,7 +41,7 @@ public class CityData {
         incorporated = false;
         timezone = null;
         zips = new int[0];
-        id = -1;
+        //id = -1;
     }
 
     public String getCity() {
@@ -161,11 +166,11 @@ public class CityData {
         zips = temp;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
