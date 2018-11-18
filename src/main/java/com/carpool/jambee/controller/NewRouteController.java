@@ -5,10 +5,16 @@ import com.carpool.jambee.mongodb.model.UserData;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class NewRouteController {
+    @GetMapping("/add")
+    public String add() {
+        return "add";
+    }
+
     @PostMapping(value="/add/submit",
                  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String addNewRoute(
@@ -42,6 +48,5 @@ public class NewRouteController {
 
         return "redirect:/add";
     }
-
 
 }
