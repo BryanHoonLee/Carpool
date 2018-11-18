@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "cityData")
 public class CityData {
     @Id
-    private     String id;
+    private  String id;
     private  String city;
     private  String cityASCII;
     private  String stateID;
