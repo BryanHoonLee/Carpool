@@ -49,7 +49,12 @@ public class CityDataController {
     // Finds all cities in proximity in same state
     public List<CityData> findByProximity(String stateID, String city){
         List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
-        CityData originCity = this.cityDataRepository.findByStateIDAndCity(stateID, city).get(0);
+        CityData originCity = new CityData();
+        for(CityData cityData: cityWithSameStateID){
+            if(cityData.getStateID().equals(stateID) && cityData.getCity().equals(city)){
+                originCity = cityData;
+            }
+        }
 
         //DUMMY RADIUS DELETE LATER DELETE LATER DELETE LATER DELETE LATER DELETE LATER DELETE LATER
         double radius = 20.0;
