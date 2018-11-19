@@ -3,7 +3,6 @@ package com.carpool.jambee.mongodb.controller;
 import com.carpool.jambee.CityRouteMath;
 import com.carpool.jambee.LatLngArea;
 import com.carpool.jambee.mongodb.model.CityData;
-import com.carpool.jambee.mongodb.model.UserData;
 import com.carpool.jambee.mongodb.repository.CityDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
