@@ -31,5 +31,16 @@ public class CityDataController {
         return cityWithSameStateID;
     }
 
+    // Check if there exists a city with specified City Name and State ID
+    public boolean checkExistsCityAndStateID(@PathVariable("city") String city, @PathVariable("stateID") String stateID){
+        List<CityData> cityList = this.cityDataRepository.findByStateIDAndCity(stateID, city);
+        boolean cityAndStateIDExists = false;
+        if (cityList.size() > 0){
+            cityAndStateIDExists = true;
+        }
+
+        return cityAndStateIDExists;
+    }
+
 
 }
