@@ -15,7 +15,7 @@ public class NewRouteController {
         return "add";
     }
 
-    @PostMapping(value="/add/submit",
+    @PostMapping(value="/add",
                  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String addNewRoute(
             Model model,

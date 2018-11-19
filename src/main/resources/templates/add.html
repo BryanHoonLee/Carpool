@@ -20,6 +20,15 @@
 <body>
     <h1>Add a New Route</h1>
 
+    <p th:if="${submitMessage}">
+        <span th:if="${success}">
+            Submission success!
+        </span>
+        <span th:unless>
+            Submission failed: Starting city or destination city doesn't exist.
+        </span>
+    </p>
+
     <form id="newRouteForm" action="/add" autocomplete="off" method="POST">
     <p>Going from:</p>
         <select id="startingStateInput" class="form-inline" name="startingState" form="newRouteForm" onchange="fetchStartingCities(this.value)">

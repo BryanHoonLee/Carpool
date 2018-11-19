@@ -18,7 +18,6 @@ public class CityDataController {
     @Autowired
     private CityDataRepository cityDataRepository;
 
-
     // Get all cities in United States
     @GetMapping("/data/city/all")
     public List<CityData> getAllCityData() {
@@ -38,6 +37,7 @@ public class CityDataController {
         return cityNames;
     }
 
+    // Get all cities in same STATE
     @GetMapping("/data/city/all/{stateID}")
     public List<CityData> getCitiesDataByStateID(@PathVariable("stateID") String stateID){
         List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
@@ -75,6 +75,17 @@ public class CityDataController {
         }
 
         return stateNames;
+    }
+
+    // Check if there exists a city with specified City Name and State ID
+    public boolean checkExistsCityAndStateID(@PathVariable("city") String city, @PathVariable("stateID") String stateID){
+        List<CityData> cityList = this.cityDataRepository.findByStateIDAndCity(stateID, city);
+        boolean cityAndStateIDExists = false;
+        if (cityList.size() > 0){
+            cityAndStateIDExists = true;
+        }
+
+        return cityAndStateIDExists;
     }
 
 }
