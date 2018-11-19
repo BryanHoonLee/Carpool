@@ -1,4 +1,4 @@
-package com.carpool.jambee;
+package com.carpool.jambee.mongodb.model;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.annotation.Id;

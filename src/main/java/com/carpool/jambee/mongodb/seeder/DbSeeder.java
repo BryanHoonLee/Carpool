@@ -1,16 +1,12 @@
 package com.carpool.jambee.mongodb.seeder;
 
-import com.carpool.jambee.CityData;
+import com.carpool.jambee.mongodb.model.CityData;
 import com.carpool.jambee.CsvReader;
-import com.carpool.jambee.mongodb.model.Address;
-import com.carpool.jambee.mongodb.model.UserData;
 import com.carpool.jambee.mongodb.repository.CityDataRepository;
 import com.carpool.jambee.mongodb.repository.UserDataRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -30,28 +26,28 @@ public class DbSeeder implements CommandLineRunner {
         CsvReader csvReader = new CsvReader();
         List<CityData> cityDataList = csvReader.readFile("classpath:uscities.csv");
         // D U M M Y DATA
-        UserData userData = new UserData(
-                new Address("Temecula", "CA"),
-                new Address("Pomona", "CA"),
-                new boolean[7],
-                "bryanlee@cpp.edu",
-                "123-456-7897",
-                "No drinks or food allowed",
-                "Food"
-        );
+//        UserData userData = new UserData(
+//                new Address("Temecula", "CA"),
+//                new Address("Pomona", "CA"),
+//                new boolean[7],
+//                "bryanlee@cpp.edu",
+//                "123-456-7897",
+//                "No drinks or food allowed",
+//                "Food"
+//        );
+//
+//        UserData userData2 = new UserData(
+//                new Address("Walnut", "CA"),
+//                new Address("Pomona", "CA"),
+//                new boolean[7],
+//                "james@cpp.edu",
+//                "999-999-9999",
+//                "No Peanuts",
+//                "Food"
+//        );
 
-        UserData userData2 = new UserData(
-                new Address("Walnut", "CA"),
-                new Address("Pomona", "CA"),
-                new boolean[7],
-                "james@cpp.edu",
-                "999-999-9999",
-                "No Peanuts",
-                "Food"
-        );
-
-        List<UserData> topics = Arrays.asList(userData, userData2);
-        this.userDataRepository.saveAll(topics);
+//        List<UserData> topics = Arrays.asList(userData, userData2);
+//        this.userDataRepository.saveAll(topics);
 
         this.cityDataRepository.deleteAll();
         this.cityDataRepository.saveAll(cityDataList);
