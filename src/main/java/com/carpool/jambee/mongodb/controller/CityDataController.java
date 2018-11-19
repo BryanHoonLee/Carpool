@@ -1,12 +1,11 @@
 package com.carpool.jambee.mongodb.controller;
 
-import com.carpool.jambee.CityData;
+import com.carpool.jambee.mongodb.model.CityData;
 import com.carpool.jambee.mongodb.repository.CityDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ public class CityDataController {
     @Autowired
     private CityDataRepository cityDataRepository;
 
+
+    // Get all cities in United States
     @GetMapping("/data/city/all")
     public List<CityData> getAllCityData() {
         List<CityData> cityData = this.cityDataRepository.findAll();
@@ -26,9 +27,9 @@ public class CityDataController {
     }
 
     @GetMapping("/data/city/names")
-    public ArrayList<String> getCityNames() {
+    public List<String> getCityNames() {
         List<CityData> cityData = this.cityDataRepository.findAll();
-        ArrayList<String> cityNames = new ArrayList<>();
+        List<String> cityNames = new ArrayList<>();
 
         for (CityData city : cityData) {
             cityNames.add(city.getCity());
@@ -37,14 +38,23 @@ public class CityDataController {
         return cityNames;
     }
 
-    @PostMapping("/data/city/names")
-    public ArrayList<String> getCityNames(String stateName) {
-        ArrayList<String> TEMP = new ArrayList<>();
-        TEMP.add("firstData");
-        TEMP.add("yep");
-        TEMP.add("sure thing");
+    @GetMapping("/data/city/all/{stateID}")
+    public List<CityData> getCitiesDataByStateID(@PathVariable("stateID") String stateID){
+        List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
 
-        return TEMP;
+        return cityWithSameStateID;
+    }
+
+    @GetMapping("/data/city/names/{stateID}")
+    public List<String> getCityNamesByStateID(@PathVariable("stateID") String stateID){
+        List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
+
+        List<String> cityNames = new ArrayList<>();
+
+        for (CityData city : cityWithSameStateID)
+            cityNames.add(city.getCity());
+
+        return cityNames;
     }
 
     @PostMapping("/check/city/name")
@@ -55,9 +65,9 @@ public class CityDataController {
     }
 
     @GetMapping("/data/city/states/names")
-    public ArrayList<String> getStateNames() {
+    public List<String> getStateNames() {
         List<CityData> cityData = this.cityDataRepository.findAll();
-        ArrayList<String> stateNames = new ArrayList<>();
+        List<String> stateNames = new ArrayList<>();
 
         for (CityData city : cityData) {
             if (!stateNames.contains(city.getStateName()))
@@ -66,4 +76,5 @@ public class CityDataController {
 
         return stateNames;
     }
+
 }

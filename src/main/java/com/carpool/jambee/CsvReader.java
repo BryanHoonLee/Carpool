@@ -1,5 +1,6 @@
 package com.carpool.jambee;
 
+import com.carpool.jambee.mongodb.model.CityData;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;

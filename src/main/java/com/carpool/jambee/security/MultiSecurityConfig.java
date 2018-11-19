@@ -25,7 +25,7 @@ public class MultiSecurityConfig {
                     .antMatchers("/register").permitAll()
                     .antMatchers("/add", "/add/submit").permitAll()
                     .antMatchers("/search").permitAll()
-                    .antMatchers("/data/city/all", "/data/city/names", "/data/city/states/names").permitAll()
+                    .antMatchers("/data/city/all", "/data/city/names", "/data/city/states/names", "/data/city/names/*").permitAll()
                     .antMatchers("/check/city/name").permitAll()
                     .antMatchers("/test").hasRole("USER")
                     .anyRequest().authenticated()

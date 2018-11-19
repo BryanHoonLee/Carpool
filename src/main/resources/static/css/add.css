@@ -24,8 +24,11 @@ input[type=submit] {
     color: #fff;
 }
 
+.form-inline {
+    display: inline-block;
+}
+
 .autocomplete {
-    /*the container must be positioned relative:*/
     position: relative;
 }
 
