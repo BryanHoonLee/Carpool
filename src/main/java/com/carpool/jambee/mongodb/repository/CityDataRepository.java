@@ -1,7 +1,6 @@
 package com.carpool.jambee.mongodb.repository;
 
 import com.carpool.jambee.mongodb.model.CityData;
-import com.carpool.jambee.mongodb.model.UserData;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,7 +15,7 @@ public interface CityDataRepository extends MongoRepository<CityData, String> {
     List<CityData> findByStateID(String stateID);
 
     // finds cities with specified state ID and city name
-    @Query(value = "{'stateID':?0}, {'city':?1")
+    @Query(value = "{'stateID':?0}, {'city':?1}")
     List<CityData> findByStateIDAndCity(String stateID, String city);
 
 //    @Query(value = "{'stateID':?0},{'city':?1}")
