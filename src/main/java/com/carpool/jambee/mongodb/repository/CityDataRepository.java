@@ -19,7 +19,7 @@ public interface CityDataRepository extends MongoRepository<CityData, String> {
     @Query(value = "{'stateID':?0}, {'city':?1")
     List<CityData> findByStateIDAndCity(String stateID, String city);
 
-    @Query(value = "{'stateID':?1},{'city':?1}")
-    CityData findByCityName(String stateID, String city);
+//    @Query(value = "{'stateID':?0},{'city':?1}")
+//    CityData findByStateIDAndCity(String stateID, String city);
 
 }

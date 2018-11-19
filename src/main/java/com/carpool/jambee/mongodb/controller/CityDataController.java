@@ -35,21 +35,21 @@ public class CityDataController {
     }
 
     // Check if there exists a city with specified City Name and State ID
-
     public boolean checkExistsCityAndStateID(String city, String stateID){
         List<CityData> cityList = this.cityDataRepository.findByStateIDAndCity(stateID, city);
         boolean cityAndStateIDExists = false;
-        if (cityList.size() > 0){
-            cityAndStateIDExists = true;
+        for(int i = 0; i < cityList.size(); i++){
+            if (cityList.get(i).getCity().equals(city) && cityList.get(i).getStateID().equals(stateID)){
+                cityAndStateIDExists = true;
+            }
         }
-
         return cityAndStateIDExists;
     }
 
     // Finds all cities in proximity in same state
     public List<CityData> findByProximity(String stateID, String city){
         List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
-        CityData originCity = this.cityDataRepository.findByCityName(stateID, city);
+        CityData originCity = this.cityDataRepository.findByStateIDAndCity(stateID, city).get(0);
 
         //DUMMY RADIUS DELETE LATER DELETE LATER DELETE LATER DELETE LATER DELETE LATER DELETE LATER
         double radius = 20.0;
