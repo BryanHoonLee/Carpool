@@ -1,0 +1,54 @@
+<!--This is for adding a new carpool route -->
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add</title>
+    <link rel="stylesheet" type="text/css" href="/css/base-styles.css" />
+    <link rel="stylesheet" type="text/css" href="/css/fonts.css" />
+    <link rel="stylesheet" type="text/css" href="/css/login.css" />
+</head>
+
+<body>
+    <h1>Add a New Route</h1>
+
+    <form>
+        <p>Going from:</p>
+        <input type="text" placeholder="City">
+        <input type="text" placeholder="State (CA, NY, etc.)">
+        <p>Going to:</p>
+        <input type="text" placeholder="City">
+        <input type="text" placeholder="State">
+        <br>
+        <p>Days of Commute:</p>
+        <input type="checkbox" name="day1" value="Monday"> Monday
+        <input type="checkbox" name="day2" value="Tuesday"> Tuesday
+        <input type="checkbox" name="day3" value="Wednesday"> Wednesday
+        <input type="checkbox" name="day4" value="Thursday"> Thursday
+        <input type="checkbox" name="day5" value="Friday"> Friday
+        <input type="checkbox" name="day6" value="Saturday"> Saturday
+        <input type="checkbox" name="day7" value="Sunday"> Sunday
+        <br>
+
+        <input type="text" placeholder="Contact Email">
+        <input type="text" placeholder="Contact Number (optional)">
+        <br>
+        <input type="text" placeholder="Notes (optional)">
+
+        <p>Preferred Compensation:</p>
+        <select>
+            <option value="money">Money</option>
+            <option value="fuel">Fuel</option>
+            <option value="food">Food</option>
+            <option value="carpool">Carpool</option>
+            <option value="nothing">Nothing</option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>

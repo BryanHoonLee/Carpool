@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/css/base-styles.css" />
     <link rel="stylesheet" type="text/css" href="/css/fonts.css" />
     <link rel="stylesheet" type="text/css" href="/css/login.css" />
@@ -16,15 +17,23 @@
     <h1>Register</h1>
 
     <div id="loginContainer">
-        <div th:if="${registered}" class="logMessageContainer bad">
-            <p class="logMessage">Registration is not working at this time.</p>
+        <div th:if="${registerError}" class="logMessageContainer bad">
+            <p th:if="${mismatchedPasswords}" class="logMessage">
+                Passwords do not match.
+            </p>
+            <p th:if="${notValidEmail}" class="logMessage">
+                Email is invalid.
+            </p>
+            <p th:if="${notEduEmail}" class="logMessage">
+                Sorry. We only support .edu email addresses for now.
+            </p>
         </div>
         <form action="/register" method="POST">
-            <input type="text" placeholder="First Name">
-            <input type="text" placeholder="Last Name">
-            <input type="text" placeholder=".edu email address">
-            <input type="password" placeholder="Password">
-            <input type="password" placeholder="Re-enter password">
+            <input type="text" name="firstName" placeholder="First Name">
+            <input type="text" name="lastName" placeholder="Last Name">
+            <input type="text" name="email" placeholder=".edu email address">
+            <input type="password" name="password" placeholder="Password">
+            <input type="password" name="matchingPassword" placeholder="Re-enter password">
             <input type="submit" value="Register">
             <input type="hidden"
                    th:name="${_csrf.parameterName}"

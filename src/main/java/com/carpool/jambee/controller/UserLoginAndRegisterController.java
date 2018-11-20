@@ -1,11 +1,16 @@
 package com.carpool.jambee.controller;
 
+import com.carpool.jambee.model.NewUser;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.regex.Pattern;
 
 @Controller
 public class UserLoginAndRegisterController {
@@ -30,10 +35,54 @@ public class UserLoginAndRegisterController {
         return "register";
     }
 
-    @PostMapping("/register")
-    public ModelAndView registerHandler(ModelAndView modelAndView) {
-        modelAndView.addObject("registered", true);
-        modelAndView.setViewName("register");
-        return modelAndView;
+    @PostMapping(value = "/register",
+                 consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String registerHandler(
+            Model model,
+            //@Valid NewUser newUser) {
+            NewUser newUser) {
+
+        System.out.println(newUser.getFirstName());
+        System.out.println(newUser.getLastName());
+        System.out.println(newUser.getEmail());
+        System.out.println(newUser.getPassword());
+        System.out.println(newUser.getMatchingPassword());
+
+        String redirectLocation = "register_complete";
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if (newUser.getPassword().equals(newUser.getMatchingPassword())) {
+            model.addAttribute("registerError", true);
+            model.addAttribute("mismatchedPasswords", true);
+            redirectLocation = "register";
+        }
+
+        if (!isValidEmailAddress(newUser.getEmail())) {
+            model.addAttribute("registerError", true);
+            model.addAttribute("notValidEmail", true);
+            redirectLocation = "register";
+        }
+        else {
+            if (!isEmailEduAddress(newUser.getEmail())) {
+                model.addAttribute("registerError", true);
+                model.addAttribute("notEduEmail", true);
+                redirectLocation = "register";
+            }
+        }
+
+        return redirectLocation;
+    }
+
+    private boolean isValidEmailAddress(String str) {
+        if (str.length() < 3) return false;
+
+        return Pattern.matches("\\S+@\\S+", str);
+    }
+
+    private boolean isEmailEduAddress(String address) {
+        if (address.length() < 4) return false;
+
+        return Pattern.matches("\\S*@\\S+.edu", address);
     }
 }
