@@ -57,13 +57,6 @@ public class CityDataController {
         return cityNames;
     }
 
-    @PostMapping("/check/city/name")
-    public boolean isCityReal(String city) {
-        Optional<CityData> op = this.cityDataRepository.findById(city);
-
-        return op.isPresent();
-    }
-
     @GetMapping("/data/city/states/names")
     public List<String> getStateNames() {
         List<CityData> cityData = this.cityDataRepository.findAll();

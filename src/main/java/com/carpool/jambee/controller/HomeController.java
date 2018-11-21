@@ -27,8 +27,4 @@ public class HomeController {
         return "search";
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "test_authentication";
-    }
 }

@@ -26,6 +26,13 @@ public class NewRouteController {
         return "add";
     }
 
+    @PostMapping("/test")
+    public boolean testOnly(String city) {
+        System.out.println(city);
+        return checkExistsCityAndStateID(city, "CA");
+        //return "/test";
+    }
+
     @PostMapping(value="/add",
                  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String addNewRoute(
@@ -57,11 +64,16 @@ public class NewRouteController {
         model.addAttribute("success", success);
 
         if (success) {
-            List<CityData> cities = findByProximity(startingCity, startingState);
-            for (CityData city : cities) {
-        // TEMPORARY, NEED TO FINISH OUT AND INTEGRATE WITH FRONTEND
+// TEMPORARY RADII USED, NEED TO GET FROM FRONTEND
+            List<CityData> startingCities = findByProximity(startingCity, startingState, 30);
+            List<CityData> destinationCities = findByProximity(destinationCity, destinationState, 30);
+
+// TEMPORARY LOOPS, NEED TO FINISH OUT AND INTEGRATE WITH FRONTEND
+            for (CityData city : startingCities)
                 System.out.println(city.getCity());
-            }
+            System.out.println("-------");
+            for (CityData city : destinationCities)
+                System.out.println(city.getCity());
         }
 
         userData.setDaysOfWeek(daysOfWeek);
@@ -75,7 +87,7 @@ public class NewRouteController {
     }
 
     // Check if there exists a city with specified City Name and State ID
-    private boolean checkExistsCityAndStateID(String city, String stateID){
+    private boolean checkExistsCityAndStateID(String city, String stateID) {
         List<CityData> cityList = this.cityDataRepository.findByStateIDAndCity(stateID, city);
         boolean cityAndStateIDExists = false;
         for(int i = 0; i < cityList.size(); i++){
@@ -87,18 +99,14 @@ public class NewRouteController {
     }
 
     // Finds all cities in proximity in same state
-    public List<CityData> findByProximity(String city, String stateID){
+    public List<CityData> findByProximity(String city, String stateID, double radius) {
         List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
         CityData originCity = new CityData();
-        for(CityData cityData: cityWithSameStateID){
-            if(cityData.getStateID().equals(stateID) && cityData.getCity().equals(city)){
+        for(CityData cityData: cityWithSameStateID) {
+            if (cityData.getStateID().equals(stateID) && cityData.getCity().equals(city)) {
                 originCity = cityData;
             }
         }
-
-        //DUMMY RADIUS DELETE LATER DELETE LATER DELETE LATER DELETE LATER DELETE LATER DELETE LATER
-        double radius = 30.0;
-        //DUMMY RADIUS DELETE LATER DELETE LATER DELETE LATER DELETE LATER DELETE LATER DELETE LATER
 
         List<CityData> foundCities = new ArrayList<>();
         CityRouteMath cityRouteMath = new CityRouteMath();
