@@ -1,24 +1,34 @@
 package com.carpool.jambee;
 
 import com.carpool.jambee.mongodb.model.CityData;
-import org.springframework.util.ResourceUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CsvReader {
 
     public ArrayList<CityData> readFile(String citiesFile) {
+        ClassPathResource cpr = new ClassPathResource(citiesFile);
+        String fileData = "";
         Scanner input = null;
-        File file;
 
         try {
-            file = ResourceUtils.getFile(citiesFile);
-            input = new Scanner(file);
+            byte[] bdata = FileCopyUtils.copyToByteArray(cpr.getInputStream());
+            fileData = new String(bdata, StandardCharsets.UTF_8);
+            input = new Scanner(fileData);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to find cities CSV file. Aborting.");
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println("Unable to get input stream. Aborting.");
             System.exit(1);
         }
 
