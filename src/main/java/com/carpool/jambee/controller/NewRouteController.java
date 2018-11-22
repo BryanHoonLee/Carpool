@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,12 +44,13 @@ public class NewRouteController {
             UserData userData,
             String startingCity,
             String startingState,
+            int    startingCityRadius,
             String destinationCity,
             String destinationState,
+            int    destinationCityRadius,
             String day1, String day2, String day3,
             String day4, String day5, String day6, String day7)
     {
-        model.addAttribute("submitMessage", true);
         boolean daysOfWeek[] = {
                 day1 != null,
                 day2 != null,
@@ -58,15 +63,26 @@ public class NewRouteController {
         Address startingAddress = new Address(startingCity, startingState);
         Address destinationAddress = new Address(destinationCity, destinationState);
 
-        boolean success;
-        success = checkExistsCityAndStateID(startingCity, startingState) &&
-                  checkExistsCityAndStateID(destinationCity, destinationState);
-        model.addAttribute("success", success);
+        boolean startCityExists, destinationCityExists;
+        startCityExists = checkExistsCityAndStateID(startingCity, startingState);
+        destinationCityExists = checkExistsCityAndStateID(destinationCity, destinationState);
 
-        if (success) {
-// TEMPORARY RADII USED, NEED TO GET FROM FRONTEND
-            List<CityData> startingCities = findByProximity(startingCity, startingState, 30);
-            List<CityData> destinationCities = findByProximity(destinationCity, destinationState, 30);
+        ArrayList<String> messages = new ArrayList<>();
+        String mainMessage = "";
+
+        if (startCityExists && destinationCityExists &&
+            startingCityRadius >= 0 && startingCityRadius <= 80 &&
+            destinationCityRadius >= 0 && destinationCityRadius <= 80)
+        {
+            mainMessage = "Submission success.";
+            List<CityData> startingCities = findByProximity(
+                startingCity,
+                startingState,
+                milesToKM(startingCityRadius));
+            List<CityData> destinationCities = findByProximity(
+                destinationCity,
+                destinationState,
+                milesToKM(destinationCityRadius));
 
 // TEMPORARY LOOPS, NEED TO FINISH OUT AND INTEGRATE WITH FRONTEND
             for (CityData city : startingCities)
@@ -75,15 +91,41 @@ public class NewRouteController {
             for (CityData city : destinationCities)
                 System.out.println(city.getCity());
         }
+        else {
+            mainMessage = "Failed to submit:";
+
+            if (!startCityExists)
+                messages.add("Starting city does not exist.");
+            if (!destinationCityExists)
+                messages.add("Destination city does not exist.");
+            if (startingCityRadius < 0)
+                messages.add("Starting city radius cannot be less than 0 miles");
+            if (startingCityRadius > 80)
+                messages.add("Starting city radius cannot be more than 80 miles");
+            if (destinationCityRadius < 0)
+                messages.add("Destination city radius cannot be less than 0 miles");
+            if (destinationCityRadius > 80)
+                messages.add("Destination city radius cannot be more than 80 miles");
+
+        }
 
         userData.setDaysOfWeek(daysOfWeek);
         userData.setStartingAddress(startingAddress);
         userData.setDestinationAddress(destinationAddress);
 
-        if (!userData.getStartingAddress().getCity().equals(""))
-            model.addAttribute("cityData", userData.getStartingAddress().getCity());
+        model.addAttribute("isSubmit", true);
+        model.addAttribute("mainMessage", mainMessage);
+        model.addAttribute("messages", messages);
 
-        return "redirect:/add";
+        return "/add";
+    }
+
+    private int milesToKM(int miles) {
+        return (int)((double)miles * 1.609344);
+    }
+
+    private int kmToMiles(int km) {
+        return (int)((double)km * 0.6213712);
     }
 
     // Check if there exists a city with specified City Name and State ID
@@ -100,6 +142,8 @@ public class NewRouteController {
 
     // Finds all cities in proximity in same state
     public List<CityData> findByProximity(String city, String stateID, double radius) {
+        if (radius <= 0) radius = 1;
+
         List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
         CityData originCity = new CityData();
         for(CityData cityData: cityWithSameStateID) {
