@@ -10,13 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +66,13 @@ public class NewRouteController {
         ArrayList<String> messages = new ArrayList<>();
         String mainMessage = "";
 
+        class CityNames {
+            public String starting = "";
+            public String destination = "";
+        }
+
+        ArrayList<CityNames> cityNames = new ArrayList<>();
+
         if (startCityExists && destinationCityExists &&
             startingCityRadius >= 0 && startingCityRadius <= 80 &&
             destinationCityRadius >= 0 && destinationCityRadius <= 80)
@@ -84,12 +87,19 @@ public class NewRouteController {
                 destinationState,
                 milesToKM(destinationCityRadius));
 
-// TEMPORARY LOOPS, NEED TO FINISH OUT AND INTEGRATE WITH FRONTEND
-            for (CityData city : startingCities)
-                System.out.println(city.getCity());
-            System.out.println("-------");
-            for (CityData city : destinationCities)
-                System.out.println(city.getCity());
+            for (CityData city : startingCities) {
+                CityNames temp = new CityNames();
+                temp.starting = city.getCity();
+                cityNames.add(temp);
+            }
+            for (int i = 0; i < destinationCities.size(); i++) {
+                CityNames temp = new CityNames();
+                temp.destination = destinationCities.get(i).getCity();
+                if (i < startingCities.size())
+                    cityNames.get(i).destination = temp.destination;
+                else
+                    cityNames.add(temp);
+            }
         }
         else {
             mainMessage = "Failed to submit:";
@@ -116,6 +126,7 @@ public class NewRouteController {
         model.addAttribute("isSubmit", true);
         model.addAttribute("mainMessage", mainMessage);
         model.addAttribute("messages", messages);
+        model.addAttribute("citiesNames", cityNames);
 
         return "/add";
     }

@@ -15,6 +15,13 @@
     <link rel="stylesheet" type="text/css" href="/css/dropdown-suggestions.css" />
     <script type="text/javascript" th:src="@{/js/getCities.js}"></script>
     <script type="text/javascript" th:src="@{/js/dropdownSuggestions.js}"></script>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            margin: 0;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -187,6 +194,21 @@
                th:value="${_csrf.token}"
         />
     </form>
+
+    <div th:if="${isSubmit}">
+        <table style="margin: 30px; margin-left: auto; margin-right: auto">
+            <tr>
+                <th>Included starting cities</th>
+                <th>Included destination cities</th>
+            </tr>
+            <th:block th:each="name : ${citiesNames}">
+                <tr>
+                    <td th:text="${name.starting}">...</td>
+                    <td th:text="${name.destination}">...</td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
 
     <script>
         fetchStartingCities("AL");
