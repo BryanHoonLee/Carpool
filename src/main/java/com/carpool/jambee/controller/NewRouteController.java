@@ -136,7 +136,7 @@ public class NewRouteController {
         model.addAttribute("messages", messages);
         model.addAttribute("citiesNames", cityNames);
 
-        return "/add";
+        return "add";
     }
 
     private int milesToKM(int miles) {
