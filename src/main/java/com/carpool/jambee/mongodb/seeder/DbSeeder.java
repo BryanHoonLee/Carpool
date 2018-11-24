@@ -24,7 +24,7 @@ public class DbSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         CsvReader csvReader = new CsvReader();
-        List<CityData> cityDataList = csvReader.readFile("classpath:uscities.csv");
+        List<CityData> cityDataList = csvReader.readFile("uscities.csv");
         // D U M M Y DATA
 //        UserData userData = new UserData(
 //                new Address("Temecula", "CA"),
