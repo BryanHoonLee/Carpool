@@ -2,7 +2,7 @@ function createTable() {
 	// Insert whichever data you need in the array and it will push onto the front
 	// Add more rows if needed for more data
 	var table = new Array();
-	table.push(["City, State", "City, State", "Days", "Email", "Phone number", "Preferred Compensation"]);
+	table.push(["Glendale, CA", "Pomona, CA", "MoWeFri", "bob@mail.com", "123", "Money"]);
 	table.push(["City, State", "City, State", "Days", "Email", "Phone number", "Preferred Compensation"]);
 	table.push(["City, State", "City, State", "Days", "Email", "Phone number", "Preferred Compensation"]);
 	table.push(["City, State", "City, State", "Days", "Email", "Phone number", "Preferred Compensation"]);
