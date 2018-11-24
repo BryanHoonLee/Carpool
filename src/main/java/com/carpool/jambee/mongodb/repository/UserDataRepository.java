@@ -11,6 +11,16 @@ import java.util.List;
 @Repository
 public interface UserDataRepository extends MongoRepository<UserData, String> { // <type you want to store, string id>
 
+    // Find all users that have starting address from List of cities from proximity function
+    List<UserData> findByStartingAddressIn(List<Address> addresses);
+
+    // Find all users that have destination address from List of cities from proximity function
+    List<UserData> findByDestinationAddressIn(List<Address> addresses);
+
+    // Get a user's data through their ID
+    UserData findByIdEquals(String id);
+
+
     @Query(value = "{'startingAddress.city':?0}, {'startingAddress.state':?1}")
     List<UserData> findByStartingAddress(String city, String state);
 

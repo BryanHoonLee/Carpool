@@ -50,7 +50,7 @@
    backer of the project has reviewed the many existing licenses used for
    libre/open fonts and engaged the stewards of the most popular licenses
    in detailed discussions. The current interim licence is the first step
-   in progressing the state-of-the-art in licensing for libre/open font
+   in progressing the stateID-of-the-art in licensing for libre/open font
    development.
 
    The public discussion must now involve everyone in the (comparatively

@@ -2,15 +2,15 @@ package com.carpool.jambee.mongodb.model;
 
 public class Address {
     private String city;
-    private String state;
+    private String stateID;
 
     public Address(){
 
     }
 
-    public Address(String city, String state){
+    public Address(String city, String stateID){
         this.city = city;
-        this.state = state;
+        this.stateID = stateID;
     }
 
     public String getCity() {
@@ -21,11 +21,11 @@ public class Address {
         this.city = city;
     }
 
-    public String getState() {
-        return state;
+    public String getStateID() {
+        return stateID;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStateID(String stateID) {
+        this.stateID = stateID;
     }
 }

@@ -14,6 +14,8 @@ public class UserDataController {
     @Autowired
     private UserDataRepository userDataRepository;
 
+
+
     // Get all User Data
     @GetMapping("/profile/data")
     public List<UserData> getAllProfileData(){
@@ -34,7 +36,7 @@ public class UserDataController {
     }
 
     // Delete User information by Id
-    @DeleteMapping("/profile/data/{id}")
+    @DeleteMapping("/profile/data/delete/{id}")
     public void delete(@PathVariable("id") String id){
         this.userDataRepository.deleteById(id);
     }

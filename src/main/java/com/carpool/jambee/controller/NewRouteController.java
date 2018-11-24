@@ -6,18 +6,23 @@ import com.carpool.jambee.mongodb.model.Address;
 import com.carpool.jambee.mongodb.model.CityData;
 import com.carpool.jambee.mongodb.model.UserData;
 import com.carpool.jambee.mongodb.repository.CityDataRepository;
+import com.carpool.jambee.mongodb.repository.UserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@Controller
+@RestController
 public class NewRouteController {
+    @Autowired
+    private UserDataRepository userDataRepository;
     @Autowired
     private CityDataRepository cityDataRepository;
 
@@ -78,16 +83,16 @@ public class NewRouteController {
             destinationCityRadius >= 0 && destinationCityRadius <= 80)
         {
             mainMessage = "Submission success.";
-            List<CityData> startingCities = findByProximity(
+            List<Address> startingCities = findByProximity(
                 startingCity,
                 startingState,
                 milesToKM(startingCityRadius));
-            List<CityData> destinationCities = findByProximity(
+            List<Address> destinationCities = findByProximity(
                 destinationCity,
                 destinationState,
                 milesToKM(destinationCityRadius));
 
-            for (CityData city : startingCities) {
+            for (Address city : startingCities) {
                 CityNames temp = new CityNames();
                 temp.starting = city.getCity();
                 cityNames.add(temp);
@@ -123,6 +128,9 @@ public class NewRouteController {
         userData.setStartingAddress(startingAddress);
         userData.setDestinationAddress(destinationAddress);
 
+        // Maybe need to add rest of data to userData like email, phone #
+        this.userDataRepository.insert(userData);
+
         model.addAttribute("isSubmit", true);
         model.addAttribute("mainMessage", mainMessage);
         model.addAttribute("messages", messages);
@@ -152,7 +160,7 @@ public class NewRouteController {
     }
 
     // Finds all cities in proximity in same state
-    public List<CityData> findByProximity(String city, String stateID, double radius) {
+    public List<Address> findByProximity(String city, String stateID, double radius) {
         if (radius <= 0) radius = 1;
 
         List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
@@ -163,7 +171,7 @@ public class NewRouteController {
             }
         }
 
-        List<CityData> foundCities = new ArrayList<>();
+        List<Address> foundCities = new ArrayList<>();
         CityRouteMath cityRouteMath = new CityRouteMath();
         LatLngArea originCityArea = cityRouteMath.getLatLngArea(originCity.getLat(), originCity.getLng(),radius);
 
@@ -173,11 +181,30 @@ public class NewRouteController {
                cityWithSameStateID.get(i).getLng() < originCityArea.getLng1() &&
                cityWithSameStateID.get(i).getLng() > originCityArea.getLng2())
             {
-                foundCities.add(cityWithSameStateID.get(i));
+                foundCities.add(new Address(cityWithSameStateID.get(i).getCity(), cityWithSameStateID.get(i).getStateID()));
             }
         }
 
         return foundCities;
+    }
+
+    // need to get input from user input from add page
+    @GetMapping("search/test")
+    public List<UserData> searchSimilarRoutes(String startingCity, String destinationCity, String startingStateID,
+                                              String destinationStateID, double startingRadius, double destinationRadius){
+//        List<Address> startingAddress = findByProximity(startingCity, startingStateID, startingRadius);
+//        List<Address> destinationAddress = findByProximity(destinationCity, destinationStateID, destinationRadius);
+        List<Address> startingAddress = findByProximity("Pomona", "CA", 20);
+        List<Address> destinationAddress = findByProximity("Temecula", "CA", 20);
+
+        List<UserData> userWithSameStartingAddress = this.userDataRepository.findByStartingAddressIn(startingAddress);
+        List<UserData> userWithSameDestinationAddress = this.userDataRepository.findByDestinationAddressIn(destinationAddress);
+
+        // Retain all does intersection so only users that have same starting address and destination address
+        // should be in the list
+        userWithSameStartingAddress.retainAll(userWithSameDestinationAddress);
+
+        return userWithSameStartingAddress;
     }
 
 }
