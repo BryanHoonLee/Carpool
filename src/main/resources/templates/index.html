@@ -44,11 +44,74 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="thumbnail">
                     <div class="caption">
-                        <h3>Add a New Route</h3>
-                        <p>Add your commuting route so other people traveling similar destination in your area can find you.</p>
-                        <p><a href="/add" class="btn btn-primary" role="button">Add</a></p>
+                        <h3>Set a New Route</h3>
+                        <p>Set your commuting route so other people traveling similar destination in your area can find you.</p>
+                        <p><a href="/add" class="btn btn-primary" role="button">Set</a></p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" th:if="${isSignedIn}">
+        <div class="thumbnail">
+            <div class="caption" th:if="${routeIsSet}">
+                <h3>Your Current Route:</h3>
+                <hr>
+                <p><strong>Going from: </strong></p>
+                <p>
+                    <span th:text="${startingCity}">START CITY</span>,
+                    <span th:text="${startingStateID}">START STATE ID</span>
+                </p>
+                <br>
+
+                <p><strong>Going to: </strong></p>
+                <p>
+                    <span th:text="${destinationCity}">START CITY</span>,
+                    <span th:text="${destinationStateID}">START STATE ID</span>
+                </p>
+                <br>
+
+                <p><strong>On days: </strong></p>
+                <p th:text="${days}">DAYS</p>
+                <br>
+
+                <p><strong>Communication: </strong></p>
+                <p>
+                    <span th:text="${email}">EMAIL</span><br>
+                    <span th:text="${phoneNumber}">PHONE</span>
+                </p>
+                <br>
+
+                <p><strong>Compensation preferred: </strong></p>
+                <p th:text="${compensationPreferred}">COMPENSATION</p>
+                <br>
+
+                <p><strong>Extra notes: </strong></p>
+                <p th:text="${additionalNotes}">NOTES</p>
+                <br>
+
+                <table class="table table-bordered"
+                       style="max-width: 75%;  margin-left: auto; margin-right: auto">
+                    <tr>
+                        <th>Included starting cities</th>
+                        <th>Included destination cities</th>
+                    </tr>
+                    <th:block th:each="name : ${citiesNames}">
+                        <tr>
+                            <td th:text="${name.starting}">...</td>
+                            <td th:text="${name.destination}">...</td>
+                        </tr>
+                    </th:block>
+                </table>
+            </div>
+            <div class="caption" th:unless="${routeIsSet}">
+                <h3>No Route is Currently Set</h3>
+                <p>
+                    Set a new route by going to the Set Route option above. Once done, your route will be displayed
+                    here and others will also be able to find your route when they attempt to look for a route that
+                    is near yours.
+                </p>
             </div>
         </div>
     </div>

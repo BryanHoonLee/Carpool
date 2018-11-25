@@ -3,6 +3,7 @@ package com.carpool.jambee.controller;
 import com.carpool.jambee.controller.abstracts.AbstractRouteController;
 import com.carpool.jambee.mongodb.model.Address;
 import com.carpool.jambee.mongodb.model.UserData;
+import com.carpool.jambee.security.UserStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,9 +80,14 @@ public class NewRouteController extends AbstractRouteController {
                     cityNames.add(temp);
             }
 
+            userData.setId(new UserStatus().getUserId());
             userData.setDaysOfWeek(handleDaysOfWeek(day1, day2, day3, day4, day5 ,day6, day7));
             userData.setStartingAddress(startingAddress);
             userData.setDestinationAddress(destinationAddress);
+
+            if (this.userDataRepository.findByIdEquals(userData.getId()) != null)
+                this.userDataRepository.delete(this.userDataRepository.findByIdEquals(userData.getId()));
+
             this.userDataRepository.insert(userData);
         }
         else {

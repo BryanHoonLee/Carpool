@@ -13,4 +13,8 @@ public class UserStatus {
             return false;
         }
     }
+
+    public String getUserId() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 }
