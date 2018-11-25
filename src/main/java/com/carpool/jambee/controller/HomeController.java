@@ -1,25 +1,21 @@
 package com.carpool.jambee.controller;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.carpool.jambee.security.UserStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
 
     @GetMapping({"/", "/index", "/home"})
-    public String index(Model model) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ModelAndView index(ModelAndView modelAndView) {
+        UserStatus userStatus = new UserStatus();
 
-        if (principal instanceof UserDetails) { // If someone is logged in
-            model.addAttribute("isLoggedIn", true);
-        } else { // If no one is logged in (also with default name "anonymousUser")
-            model.addAttribute("isLoggedIn", false);
-        }
+        modelAndView.addObject("isSignedIn", userStatus.isUserLoggedIn());
+        modelAndView.setViewName("index");
 
-        return "index";
+        return modelAndView;
     }
 
     @GetMapping("/search")
