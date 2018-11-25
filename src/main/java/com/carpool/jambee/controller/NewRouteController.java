@@ -187,20 +187,21 @@ public class NewRouteController {
     // need to get input from user input from add page
     @GetMapping("search/test")
     public List<UserData> searchSimilarRoutes(String startingCity, String destinationCity, String startingStateID,
-                                              String destinationStateID){
-//        List<Address> startingAddress = findByProximity(startingCity, startingStateID, startingRadius);
-//        List<Address> destinationAddress = findByProximity(destinationCity, destinationStateID, destinationRadius);
-        List<Address> startingAddress = findByProximity("Pomona", "CA", 20.0);
-        List<Address> destinationAddress = findByProximity("Temecula", "CA", 20.0);
+                                              String destinationStateID, Double startingRadius, Double destinationRadius){
+        List<Address> startingAddress = findByProximity(startingCity, startingStateID, startingRadius);
+        List<Address> destinationAddress = findByProximity(destinationCity, destinationStateID, destinationRadius);
+//        List<Address> startingAddress = findByProximity("Pomona", "CA", 60.0);
+//        List<Address> destinationAddress = findByProximity("Temecula", "CA", 60.0);
 
         List<UserData> userWithSameStartingAddress = this.userDataRepository.findByStartingAddressIn(startingAddress);
         List<UserData> userWithSameDestinationAddress = this.userDataRepository.findByDestinationAddressIn(destinationAddress);
 
         // Retain all does intersection so only users that have same starting address and destination address
         // should be in the list
-        //userWithSameStartingAddress.retainAll(userWithSameDestinationAddress);
+        userWithSameStartingAddress.retainAll(userWithSameDestinationAddress);
 
-        return userWithSameDestinationAddress;
-    }
+        return userWithSameStartingAddress;
+    }    
+
 
 }

@@ -29,6 +29,16 @@ public class UserData {
         this.preferredCompensation = preferredCompensation;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return id.equals(this.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     public String getId() {
         return id;
     }
