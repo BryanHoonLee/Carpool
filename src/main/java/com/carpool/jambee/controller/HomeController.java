@@ -18,9 +18,4 @@ public class HomeController {
         return modelAndView;
     }
 
-    @GetMapping("/search")
-    public String search() {
-        return "search";
-    }
-
 }
