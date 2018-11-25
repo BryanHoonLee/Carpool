@@ -31,13 +31,6 @@ public class NewRouteController {
         return "add";
     }
 
-    @PostMapping("/test")
-    public boolean testOnly(String city) {
-        System.out.println(city);
-        return checkExistsCityAndStateID(city, "CA");
-        //return "/test";
-    }
-
     @PostMapping(value="/add",
                  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String addNewRoute(
