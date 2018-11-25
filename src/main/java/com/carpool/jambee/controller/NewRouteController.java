@@ -9,14 +9,12 @@ import com.carpool.jambee.mongodb.repository.CityDataRepository;
 import com.carpool.jambee.mongodb.repository.UserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -27,21 +25,17 @@ public class NewRouteController {
     private CityDataRepository cityDataRepository;
 
     @GetMapping("/add")
-    public String add() {
-        return "add";
-    }
-
-    @PostMapping("/test")
-    public boolean testOnly(String city) {
-        System.out.println(city);
-        return checkExistsCityAndStateID(city, "CA");
-        //return "/test";
+    public ModelAndView add(
+            ModelAndView modelAndView
+    ) {
+        modelAndView.setViewName("add");
+        return modelAndView;
     }
 
     @PostMapping(value="/add",
                  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String addNewRoute(
-            Model model,
+    public ModelAndView addNewRoute(
+            ModelAndView modelAndView,
             UserData userData,
             String startingCity,
             String startingState,
@@ -131,12 +125,14 @@ public class NewRouteController {
         // Maybe need to add rest of data to userData like email, phone #
         this.userDataRepository.insert(userData);
 
-        model.addAttribute("isSubmit", true);
-        model.addAttribute("mainMessage", mainMessage);
-        model.addAttribute("messages", messages);
-        model.addAttribute("citiesNames", cityNames);
+        modelAndView.addObject("isSubmit", true);
+        modelAndView.addObject("mainMessage", mainMessage);
+        modelAndView.addObject("messages", messages);
+        modelAndView.addObject("citiesNames", cityNames);
 
-        return "/add";
+        modelAndView.setViewName("add");
+
+        return modelAndView;
     }
 
     private int milesToKM(int miles) {
