@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Add</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/css/base-styles.css" />
     <link rel="stylesheet" type="text/css" href="/css/fonts.css" />
@@ -15,13 +16,6 @@
     <link rel="stylesheet" type="text/css" href="/css/dropdown-suggestions.css" />
     <script type="text/javascript" th:src="@{/js/getCities.js}"></script>
     <script type="text/javascript" th:src="@{/js/dropdownSuggestions.js}"></script>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            margin: 0;
-            text-align: center;
-        }
-    </style>
 </head>
 
 <body>
@@ -41,8 +35,14 @@
         </ul>
     </div>
 
+    <form action="/">
+        <input type="submit" value="Return"
+               style="margin-left: auto; margin-right: auto">
+    </form>
+
     <form id="newRouteForm" action="/add" autocomplete="off" method="POST">
-    <p>Going from:</p>
+        <hr>
+        <p>Going from:</p>
         <select id="startingStateInput" class="form-inline" name="startingState" form="newRouteForm" onchange="fetchStartingCities(this.value)">
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -102,6 +102,8 @@
         <span>&nbsp; including cities within &nbsp;</span>
         <input type="number" name="startingCityRadius" value="5" min="0" max="80" required="true">
         <span> miles</span>
+        <br><hr>
+
         <p>Going to:</p>
         <select id="destinationStateInput" class="form-inline" name="destinationState" form="newRouteForm" onchange="fetchDestinationCities(this.value)">
             <option value="AL">Alabama</option>
@@ -162,7 +164,8 @@
         <span>&nbsp; including cities within &nbsp;</span>
         <input type="number" name="destinationCityRadius" value="5" min="0" max="80" required="true">
         <span> miles</span>
-        <br>
+        <br><hr>
+
         <p>Days of Commute:</p>
         <input type="checkbox" name="day1" value="Monday"> Monday
         <input type="checkbox" name="day2" value="Tuesday"> Tuesday
@@ -171,13 +174,14 @@
         <input type="checkbox" name="day5" value="Friday"> Friday
         <input type="checkbox" name="day6" value="Saturday"> Saturday
         <input type="checkbox" name="day7" value="Sunday"> Sunday
-        <br>
+        <br><hr>
 
         <p>Communication:</p>
         <input type="text" name="email" placeholder="Contact Email">
         <input type="text" name="phoneNumber" placeholder="Contact Number (optional)">
         <br>
         <input type="text" name="additionalNotes" placeholder="Notes (optional)">
+        <br><hr>
 
         <p class="form-inline">Preferred Compensation:</p>
         <select name="preferredCompensation" class="form-inline">
@@ -188,7 +192,7 @@
             <option value="nothing">Nothing</option>
         </select>
         <br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" style="margin-bottom: 30px">
         <input type="hidden"
                th:name="${_csrf.parameterName}"
                th:value="${_csrf.token}"
@@ -196,7 +200,9 @@
     </form>
 
     <div th:if="${isSubmit}">
-        <table style="margin: 30px; margin-left: auto; margin-right: auto">
+        <table class="table table-bordered"
+               style="max-width: 75%;  margin-left: auto; margin-right: auto"
+        >
             <tr>
                 <th>Included starting cities</th>
                 <th>Included destination cities</th>
