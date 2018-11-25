@@ -14,11 +14,11 @@ public class SearchRouteController {
         return modelAndView;
     }
 
-    @PostMapping("/search")
-    public ModelAndView searchResults(
+    @PostMapping("/search/results")
+    public ModelAndView produceSearchResults(
         ModelAndView modelAndView
     ) {
-        modelAndView.setViewName("/search/results");
+        modelAndView.setViewName("search_results");
         return modelAndView;
     };
 }
