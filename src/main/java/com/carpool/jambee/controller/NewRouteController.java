@@ -1,13 +1,8 @@
 package com.carpool.jambee.controller;
 
-import com.carpool.jambee.CityRouteMath;
-import com.carpool.jambee.LatLngArea;
+import com.carpool.jambee.controller.abstracts.AbstractRouteController;
 import com.carpool.jambee.mongodb.model.Address;
-import com.carpool.jambee.mongodb.model.CityData;
 import com.carpool.jambee.mongodb.model.UserData;
-import com.carpool.jambee.mongodb.repository.CityDataRepository;
-import com.carpool.jambee.mongodb.repository.UserDataRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class NewRouteController {
-    @Autowired
-    private UserDataRepository userDataRepository;
-    @Autowired
-    private CityDataRepository cityDataRepository;
-
+public class NewRouteController extends AbstractRouteController {
     @GetMapping("/add")
     public ModelAndView add(
             ModelAndView modelAndView
@@ -46,15 +36,6 @@ public class NewRouteController {
             String day1, String day2, String day3,
             String day4, String day5, String day6, String day7)
     {
-        boolean daysOfWeek[] = {
-                day1 != null,
-                day2 != null,
-                day3 != null,
-                day4 != null,
-                day5 != null,
-                day6 != null,
-                day7 != null
-        };
         Address startingAddress = new Address(startingCity, startingState);
         Address destinationAddress = new Address(destinationCity, destinationState);
 
@@ -62,8 +43,8 @@ public class NewRouteController {
         startCityExists = checkExistsCityAndStateID(startingCity, startingState);
         destinationCityExists = checkExistsCityAndStateID(destinationCity, destinationState);
 
-        ArrayList<String> messages = new ArrayList<>();
         String mainMessage = "";
+        ArrayList<String> messages = new ArrayList<>();
 
         class CityNames {
             public String starting = "";
@@ -78,12 +59,10 @@ public class NewRouteController {
         {
             mainMessage = "Submission success.";
             List<Address> startingCities = findByProximity(
-                startingCity,
-                startingState,
+                startingCity, startingState,
                 milesToKM(startingCityRadius));
             List<Address> destinationCities = findByProximity(
-                destinationCity,
-                destinationState,
+                destinationCity, destinationState,
                 milesToKM(destinationCityRadius));
 
             for (Address city : startingCities) {
@@ -99,6 +78,11 @@ public class NewRouteController {
                 else
                     cityNames.add(temp);
             }
+
+            userData.setDaysOfWeek(handleDaysOfWeek(day1, day2, day3, day4, day5 ,day6, day7));
+            userData.setStartingAddress(startingAddress);
+            userData.setDestinationAddress(destinationAddress);
+            this.userDataRepository.insert(userData);
         }
         else {
             mainMessage = "Failed to submit:";
@@ -118,13 +102,6 @@ public class NewRouteController {
 
         }
 
-        userData.setDaysOfWeek(daysOfWeek);
-        userData.setStartingAddress(startingAddress);
-        userData.setDestinationAddress(destinationAddress);
-
-        // Maybe need to add rest of data to userData like email, phone #
-        this.userDataRepository.insert(userData);
-
         modelAndView.addObject("isSubmit", true);
         modelAndView.addObject("mainMessage", mainMessage);
         modelAndView.addObject("messages", messages);
@@ -135,73 +112,15 @@ public class NewRouteController {
         return modelAndView;
     }
 
-    private int milesToKM(int miles) {
-        return (int)((double)miles * 1.609344);
+    private boolean[] handleDaysOfWeek(
+        String day1, String day2, String day3, String day4,
+        String day5, String day6, String day7
+    ) {
+        boolean daysOfWeek[] = {
+            day1 != null, day2 != null, day3 != null, day4 != null,
+            day5 != null, day6 != null, day7 != null
+        };
+
+        return daysOfWeek;
     }
-
-    private int kmToMiles(int km) {
-        return (int)((double)km * 0.6213712);
-    }
-
-    // Check if there exists a city with specified City Name and State ID
-    private boolean checkExistsCityAndStateID(String city, String stateID) {
-        List<CityData> cityList = this.cityDataRepository.findByStateIDAndCity(stateID, city);
-        boolean cityAndStateIDExists = false;
-        for(int i = 0; i < cityList.size(); i++){
-            if (cityList.get(i).getCity().equals(city) && cityList.get(i).getStateID().equals(stateID)){
-                cityAndStateIDExists = true;
-            }
-        }
-        return cityAndStateIDExists;
-    }
-
-    // Finds all cities in proximity in same state
-    public List<Address> findByProximity(String city, String stateID, double radius) {
-        if (radius <= 0) radius = 1;
-
-        List<CityData> cityWithSameStateID = this.cityDataRepository.findByStateID(stateID);
-        CityData originCity = new CityData();
-        for(CityData cityData: cityWithSameStateID) {
-            if (cityData.getStateID().equals(stateID) && cityData.getCity().equals(city)) {
-                originCity = cityData;
-            }
-        }
-
-        List<Address> foundCities = new ArrayList<>();
-        CityRouteMath cityRouteMath = new CityRouteMath();
-        LatLngArea originCityArea = cityRouteMath.getLatLngArea(originCity.getLat(), originCity.getLng(),radius);
-
-        for(int i = 0; i < cityWithSameStateID.size(); i++){
-            if(cityWithSameStateID.get(i).getLat() < originCityArea.getLat1() &&
-               cityWithSameStateID.get(i).getLat() > originCityArea.getLat3() &&
-               cityWithSameStateID.get(i).getLng() < originCityArea.getLng1() &&
-               cityWithSameStateID.get(i).getLng() > originCityArea.getLng2())
-            {
-                foundCities.add(new Address(cityWithSameStateID.get(i).getCity(), cityWithSameStateID.get(i).getStateID()));
-            }
-        }
-
-        return foundCities;
-    }
-
-    // need to get input from user input from add page
-    @GetMapping("search/test")
-    public List<UserData> searchSimilarRoutes(String startingCity, String destinationCity, String startingStateID,
-                                              String destinationStateID, Double startingRadius, Double destinationRadius){
-        List<Address> startingAddress = findByProximity(startingCity, startingStateID, startingRadius);
-        List<Address> destinationAddress = findByProximity(destinationCity, destinationStateID, destinationRadius);
-//        List<Address> startingAddress = findByProximity("Pomona", "CA", 60.0);
-//        List<Address> destinationAddress = findByProximity("Temecula", "CA", 60.0);
-
-        List<UserData> userWithSameStartingAddress = this.userDataRepository.findByStartingAddressIn(startingAddress);
-        List<UserData> userWithSameDestinationAddress = this.userDataRepository.findByDestinationAddressIn(destinationAddress);
-
-        // Retain all does intersection so only users that have same starting address and destination address
-        // should be in the list
-        userWithSameStartingAddress.retainAll(userWithSameDestinationAddress);
-
-        return userWithSameStartingAddress;
-    }    
-
-
 }
