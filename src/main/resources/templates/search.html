@@ -8,45 +8,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Search</title>
-    <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="/css/base-styles.css" />
-    <link rel="stylesheet" type="text/css" href="/css/fonts.css" />
-    <link rel="stylesheet" type="text/css" href="/css/add.css" />
-    <link rel="stylesheet" type="text/css" href="/css/dropdown-suggestions.css" />
+    <link rel="stylesheet" type="text/css" href="/css/autocomplete.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script type="text/javascript" th:src="@{/js/getCities.js}"></script>
+    <script type="text/javascript" th:src="@{/js/dropdownSuggestions.js}"></script>
 </head>
 
 <body>
-    <h1>
-        <img src="images/logo.png" width="70" height="70" align="middle">
-        Search for Routes
-    </h1>
+    <div class="container">
+        <h1 class="page-header">
+            <img src="images/logo.png" width="70" height="70" align="middle">
+            Search for Routes
+        </h1>
+    </div>
 
-    <form action="/search/results" method="POST">
-        <input type="text" placeholder="City">
-        <input type="text" placeholder="State (CA, NY, etc.)">
-        <br>
-        <p>Days of Commute:</p>
-        <input type="checkbox" name="day1" value="Monday"> Monday
-        <input type="checkbox" name="day2" value="Tuesday"> Tuesday
-        <input type="checkbox" name="day3" value="Wednesday"> Wednesday
-        <input type="checkbox" name="day4" value="Thursday"> Thursday
-        <input type="checkbox" name="day5" value="Friday"> Friday
-        <input type="checkbox" name="day6" value="Saturday"> Saturday
-        <input type="checkbox" name="day7" value="Sunday"> Sunday
-        <p>Search Within:</p>
+    <div class="container">
+        <form action="/search/results" method="POST">
+            <input type="text" placeholder="City">
+            <input type="text" placeholder="State (CA, NY, etc.)">
+            <br>
+            <p>Days of Commute:</p>
+            <input type="checkbox" name="day1" value="Monday"> Monday
+            <input type="checkbox" name="day2" value="Tuesday"> Tuesday
+            <input type="checkbox" name="day3" value="Wednesday"> Wednesday
+            <input type="checkbox" name="day4" value="Thursday"> Thursday
+            <input type="checkbox" name="day5" value="Friday"> Friday
+            <input type="checkbox" name="day6" value="Saturday"> Saturday
+            <input type="checkbox" name="day7" value="Sunday"> Sunday
+            <p>Search Within:</p>
 
-        <select>
-            <option value="one">1 mile</option>
-            <option value="three">3 miles</option>
-            <option value="five">5 miles</option>
-            <option value="ten">10 miles</option>
-        </select>
-        <input type="submit" value="Search">
-        <input type="hidden"
-               th:name="${_csrf.parameterName}"
-               th:value="${_csrf.token}"
-        />
-    </form>
+            <select>
+                <option value="one">1 mile</option>
+                <option value="three">3 miles</option>
+                <option value="five">5 miles</option>
+                <option value="ten">10 miles</option>
+            </select>
+            <input type="submit" value="Search" class="btn btn-primary">
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"
+            />
+        </form>
+    </div>
 </body>
 
 </html>
