@@ -30,10 +30,77 @@
     </div>
 
     <div class="container">
-        <form id="searchRouteForm" action="/search/results" method="POST">
+        <hr>
+        <p>Search routes that start from:</p>
+        <form id="searchRouteForm" action="/search" method="POST">
             <select id="startingStateInput"
                     class="form-inline"
                     name="startingState"
+                    form="searchRouteForm"
+                    onchange="fetchStartingCities(this.value)">
+                <option value="AL">Alabama</option>
+                <option value="AK">Alaska</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DE">Delaware</option>
+                <option value="DC">District Of Columbia</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option>
+                <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option>
+                <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option>
+                <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NY">New York</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VT">Vermont</option>
+                <option value="VA">Virginia</option>
+                <option value="WA">Washington</option>
+                <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WY">Wyoming</option>
+            </select>
+            <div class="autocomplete form-inline">
+                <input id="startingCityInput" type="text" name="startingCity" placeholder="City">
+            </div>
+            <span>&nbsp; including cities within &nbsp;</span>
+            <input type="number" name="searchCityRadius" value="5" min="1" max="80" required="true">
+            <span>&nbsp; miles</span>
+            <br><hr>
+            <p>Routes that end at:</p>
+            <select id="destinationStateInput"
+                    class="form-inline"
+                    name="destinationState"
                     form="searchRouteForm"
                     onchange="fetchDestinationCities(this.value)">
                 <option value="AL">Alabama</option>
@@ -88,7 +155,12 @@
                 <option value="WI">Wisconsin</option>
                 <option value="WY">Wyoming</option>
             </select>
-            <input type="text" placeholder="City">
+            <div class="autocomplete form-inline">
+                <input id="destinationCityInput" type="text" name="destinationCity" placeholder="City">
+            </div>
+            <span>&nbsp; including cities within &nbsp;</span>
+            <input type="number" name="searchCityRadius" value="5" min="1" max="80" required="true">
+            <span>&nbsp; miles</span>
             <br><hr>
             <p>Days of Commute (none checked = any day):</p>
             <input type="checkbox" name="day1" value="Sunday"> Sunday &nbsp;
@@ -99,9 +171,6 @@
             <input type="checkbox" name="day6" value="Friday"> Friday &nbsp;
             <input type="checkbox" name="day7" value="Saturday"> Saturday &nbsp;
             <br><hr>
-            <p>Search Within:</p>
-            <input type="number" name="startingCityRadius" value="5" min="1" max="80" required="true">
-            <br><hr>
             <input type="submit" value="Search" class="btn btn-primary">
             <input type="hidden"
                    th:name="${_csrf.parameterName}"
@@ -109,6 +178,29 @@
             />
         </form>
     </div>
+
+    <div class="container">
+        <div th:if="${isSubmit}">
+            <table class="table table-bordered"
+                   style="max-width: 75%;  margin-left: auto; margin-right: auto">
+                <tr>
+                    <th>Included starting cities</th>
+                    <th>Included destination cities</th>
+                </tr>
+                <th:block th:each="name : ${citiesNames}">
+                    <tr>
+                        <td th:text="${name.starting}">...</td>
+                        <td th:text="${name.destination}">...</td>
+                    </tr>
+                </th:block>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        fetchStartingCities("AL");
+        fetchDestinationCities("AL");
+    </script>
 </body>
 
 </html>

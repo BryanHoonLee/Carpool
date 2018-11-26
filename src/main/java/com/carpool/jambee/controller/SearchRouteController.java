@@ -27,6 +27,48 @@ public class SearchRouteController extends AbstractRouteController {
         return modelAndView;
     };
 
+    /*
+                startingCityRadius >= 0 && startingCityRadius <= 80 &&
+                    destinationCityRadius >= 0 && destinationCityRadius <= 80
+
+            List<Address> startingCities = findByProximity(
+                startingCity, startingState,
+                milesToKM(startingCityRadius));
+            List<Address> destinationCities = findByProximity(
+                destinationCity, destinationState,
+                milesToKM(destinationCityRadius));
+
+            for (Address city : startingCities) {
+                CityNames temp = new CityNames();
+                temp.starting = city.getCity();
+                cityNames.add(temp);
+            }
+            for (int i = 0; i < destinationCities.size(); i++) {
+                CityNames temp = new CityNames();
+                temp.destination = destinationCities.get(i).getCity();
+                if (i < startingCities.size())
+                    cityNames.get(i).destination = temp.destination;
+                else
+                    cityNames.add(temp);
+            }
+
+
+
+
+if (startingCityRadius < 0)
+                messages.add("Starting city radius cannot be less than 0 miles");
+            if (startingCityRadius > 80)
+                messages.add("Starting city radius cannot be more than 80 miles");
+            if (destinationCityRadius < 0)
+                messages.add("Destination city radius cannot be less than 0 miles");
+            if (destinationCityRadius > 80)
+                messages.add("Destination city radius cannot be more than 80 miles");
+
+
+                modelAndView.addObject("citiesNames", cityNames);
+     */
+
+
     // need to get input from user input from add page
     @GetMapping("search/test")
     public List<UserData> searchSimilarRoutes(String startingCity, String destinationCity, String startingStateID,
