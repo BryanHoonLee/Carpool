@@ -1,5 +1,6 @@
 package com.carpool.jambee.mongodb.model;
 
+import com.carpool.jambee.model.User;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -31,7 +32,13 @@ public class UserData {
 
     @Override
     public boolean equals(Object obj) {
-        return id.equals(this.getId());
+        if(!(obj instanceof UserData)){
+            return false;
+        }
+
+        UserData userData = (UserData) obj;
+
+        return id.equals(userData.getId());
     }
 
     @Override
