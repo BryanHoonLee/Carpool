@@ -5,6 +5,7 @@ import com.carpool.jambee.mongodb.model.UserData;
 import com.carpool.jambee.security.UserStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -46,31 +47,16 @@ public class HomeController extends AbstractRouteController {
         return modelAndView;
     }
 
-    private String interpretDaysOfWeek(boolean[] daysOfWeek) {
-        String out = "";
+    @PostMapping("/delete")
+    public ModelAndView deleteRoute(ModelAndView modelAndView) {
+        UserStatus userStatus = new UserStatus();
 
-        if (daysOfWeek[0]) out += "S";
-        else               out += "-";
+        if (this.userDataRepository.findByIdEquals(userStatus.getUserId()) != null)
+            this.userDataRepository.delete(this.userDataRepository.findByIdEquals(userStatus.getUserId()));
 
-        if (daysOfWeek[1]) out += "M";
-        else               out += "-";
+        modelAndView.setViewName("redirect:/index");
 
-        if (daysOfWeek[2]) out += "T";
-        else               out += "-";
-
-        if (daysOfWeek[3]) out += "W";
-        else               out += "-";
-
-        if (daysOfWeek[4]) out += "T";
-        else               out += "-";
-
-        if (daysOfWeek[5]) out += "F";
-        else               out += "-";
-
-        if (daysOfWeek[6]) out += "S";
-        else               out += "-";
-
-        return out;
+        return modelAndView;
     }
 
 }

@@ -108,9 +108,6 @@
             <div class="autocomplete form-inline">
                 <input id="startingCityInput" type="text" name="startingCity" placeholder="City" required="true">
             </div>
-            <span>&nbsp; including cities within &nbsp;</span>
-            <input type="number" name="startingCityRadius" value="5" min="0" max="80" required="true">
-            <span> miles</span>
             <br><hr>
 
             <p>Going to:</p>
@@ -174,35 +171,33 @@
             <div class="autocomplete form-inline">
                 <input id="destinationCityInput" type="text" name="destinationCity" placeholder="City" required="true">
             </div>
-            <span>&nbsp; including cities within &nbsp;</span>
-            <input type="number" name="destinationCityRadius" value="5" min="0" max="80" required="true">
-            <span> miles</span>
             <br><hr>
 
             <p>Days of Commute (no checks will indicate any day):</p>
-            <input type="checkbox" name="day1" value="Sunday"> Sunday
-            <input type="checkbox" name="day2" value="Monday"> Monday
-            <input type="checkbox" name="day3" value="Tuesday"> Tuesday
-            <input type="checkbox" name="day4" value="Wednesday"> Wednesday
-            <input type="checkbox" name="day5" value="Thursday"> Thursday
-            <input type="checkbox" name="day6" value="Friday"> Friday
-            <input type="checkbox" name="day7" value="Saturday"> Saturday
+            <input type="checkbox" name="day1" value="Sunday"> Sunday &nbsp;
+            <input type="checkbox" name="day2" value="Monday"> Monday &nbsp;
+            <input type="checkbox" name="day3" value="Tuesday"> Tuesday &nbsp;
+            <input type="checkbox" name="day4" value="Wednesday"> Wednesday &nbsp;
+            <input type="checkbox" name="day5" value="Thursday"> Thursday &nbsp;
+            <input type="checkbox" name="day6" value="Friday"> Friday &nbsp;
+            <input type="checkbox" name="day7" value="Saturday"> Saturday &nbsp;
             <br><hr>
 
             <p>Communication:</p>
-            <input type="text" name="email" placeholder="Contact Email">
+            <input type="email" name="email" placeholder="Contact Email" required="true">
             <input type="text" name="phoneNumber" placeholder="Contact Number (optional)">
             <br>
-            <input type="text" name="additionalNotes" placeholder="Notes (optional)">
+            <textarea name="additionalNotes" placeholder="Notes (optional)"
+                      style="margin-top: 12px"></textarea>
             <br><hr>
 
             <p class="form-inline">Preferred Compensation:</p>
             <select name="preferredCompensation" class="form-inline">
-                <option value="money">Money</option>
-                <option value="fuel">Fuel</option>
-                <option value="food">Food</option>
-                <option value="carpool">Carpool</option>
-                <option value="nothing">Nothing</option>
+                <option value="Money">Money</option>
+                <option value="Fuel">Fuel</option>
+                <option value="Food">Food</option>
+                <option value="Carpool">Carpool</option>
+                <option value="Nothing">Nothing</option>
             </select>
             <br>
             <input class="btn btn-primary" type="submit" value="Submit" style="margin-bottom: 30px">
@@ -211,24 +206,6 @@
                    th:value="${_csrf.token}"
             />
         </form>
-    </div>
-
-    <div class="container">
-        <div th:if="${isSubmit}">
-            <table class="table table-bordered"
-                   style="max-width: 75%;  margin-left: auto; margin-right: auto">
-                <tr>
-                    <th>Included starting cities</th>
-                    <th>Included destination cities</th>
-                </tr>
-                <th:block th:each="name : ${citiesNames}">
-                    <tr>
-                        <td th:text="${name.starting}">...</td>
-                        <td th:text="${name.destination}">...</td>
-                    </tr>
-                </th:block>
-            </table>
-        </div>
     </div>
 
     <script>

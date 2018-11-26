@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class NewRouteController extends AbstractRouteController {
@@ -30,10 +29,8 @@ public class NewRouteController extends AbstractRouteController {
             UserData userData,
             String startingCity,
             String startingState,
-            int    startingCityRadius,
             String destinationCity,
             String destinationState,
-            int    destinationCityRadius,
             String day1, String day2, String day3,
             String day4, String day5, String day6, String day7)
     {
@@ -47,38 +44,10 @@ public class NewRouteController extends AbstractRouteController {
         String mainMessage = "";
         ArrayList<String> messages = new ArrayList<>();
 
-        class CityNames {
-            public String starting = "";
-            public String destination = "";
-        }
-
-        ArrayList<CityNames> cityNames = new ArrayList<>();
-
         if (startCityExists && destinationCityExists &&
-            startingCityRadius >= 0 && startingCityRadius <= 80 &&
-            destinationCityRadius >= 0 && destinationCityRadius <= 80)
+            userData.getEmail() != null)
         {
             mainMessage = "Submission success.";
-            List<Address> startingCities = findByProximity(
-                startingCity, startingState,
-                milesToKM(startingCityRadius));
-            List<Address> destinationCities = findByProximity(
-                destinationCity, destinationState,
-                milesToKM(destinationCityRadius));
-
-            for (Address city : startingCities) {
-                CityNames temp = new CityNames();
-                temp.starting = city.getCity();
-                cityNames.add(temp);
-            }
-            for (int i = 0; i < destinationCities.size(); i++) {
-                CityNames temp = new CityNames();
-                temp.destination = destinationCities.get(i).getCity();
-                if (i < startingCities.size())
-                    cityNames.get(i).destination = temp.destination;
-                else
-                    cityNames.add(temp);
-            }
 
             userData.setId(new UserStatus().getUserId());
             userData.setDaysOfWeek(handleDaysOfWeek(day1, day2, day3, day4, day5 ,day6, day7));
@@ -97,21 +66,13 @@ public class NewRouteController extends AbstractRouteController {
                 messages.add("Starting city does not exist.");
             if (!destinationCityExists)
                 messages.add("Destination city does not exist.");
-            if (startingCityRadius < 0)
-                messages.add("Starting city radius cannot be less than 0 miles");
-            if (startingCityRadius > 80)
-                messages.add("Starting city radius cannot be more than 80 miles");
-            if (destinationCityRadius < 0)
-                messages.add("Destination city radius cannot be less than 0 miles");
-            if (destinationCityRadius > 80)
-                messages.add("Destination city radius cannot be more than 80 miles");
-
+            if (userData == null)
+                messages.add("Email contact information cannot be blank.");
         }
 
         modelAndView.addObject("isSubmit", true);
         modelAndView.addObject("mainMessage", mainMessage);
         modelAndView.addObject("messages", messages);
-        modelAndView.addObject("citiesNames", cityNames);
 
         modelAndView.setViewName("add");
 

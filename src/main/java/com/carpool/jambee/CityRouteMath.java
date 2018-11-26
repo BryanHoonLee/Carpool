@@ -27,13 +27,14 @@ public class CityRouteMath {
     }
 
     public static LatLngArea getLatLngArea(double lat, double lng, double radius) {
+
         // 1 degree latitude is approximately 110.54 km at the equator (or everywhere, generally)
         double lengthDegree = 1 / 110.54;
         double radiusAsDegrees = radius * lengthDegree;
         double topLat = lat + radiusAsDegrees;
         double botLat = lat - radiusAsDegrees;
-        double degOfTopLng = Math.cos(topLat) * radiusAsDegrees;
-        double degOfBotLng = Math.cos(botLat) * radiusAsDegrees;
+        double degOfTopLng = Math.cos(Math.toRadians(topLat)) * radiusAsDegrees;
+        double degOfBotLng = Math.cos(Math.toRadians(botLat)) * radiusAsDegrees;
         double topLeftLng = lng - (degOfTopLng / 2);
         double topRightLng = lng + (degOfTopLng / 2);
         double botLeftLng = lng - (degOfBotLng / 2);

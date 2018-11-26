@@ -34,10 +34,10 @@ public abstract class AbstractRouteController {
         LatLngArea originCityArea = cityRouteMath.getLatLngArea(originCity.getLat(), originCity.getLng(),radius);
 
         for(int i = 0; i < cityWithSameStateID.size(); i++){
-            if(cityWithSameStateID.get(i).getLat() < originCityArea.getLat1() &&
-                    cityWithSameStateID.get(i).getLat() > originCityArea.getLat3() &&
-                    cityWithSameStateID.get(i).getLng() < originCityArea.getLng1() &&
-                    cityWithSameStateID.get(i).getLng() > originCityArea.getLng2())
+            if(cityWithSameStateID.get(i).getLat() <= originCityArea.getLat1() &&
+                    cityWithSameStateID.get(i).getLat() >= originCityArea.getLat3() &&
+                    cityWithSameStateID.get(i).getLng() >= originCityArea.getLng1() &&
+                    cityWithSameStateID.get(i).getLng() <= originCityArea.getLng2())
             {
                 foundCities.add(new Address(cityWithSameStateID.get(i).getCity(), cityWithSameStateID.get(i).getStateID()));
             }
@@ -65,4 +65,67 @@ public abstract class AbstractRouteController {
         }
         return cityAndStateIDExists;
     }
+    protected String interpretDaysOfWeek(boolean[] daysOfWeek) {
+        String out = "";
+
+        if (daysOfWeek[0]) out += "S";
+        else               out += "-";
+
+        if (daysOfWeek[1]) out += "M";
+        else               out += "-";
+
+        if (daysOfWeek[2]) out += "T";
+        else               out += "-";
+
+        if (daysOfWeek[3]) out += "W";
+        else               out += "-";
+
+        if (daysOfWeek[4]) out += "T";
+        else               out += "-";
+
+        if (daysOfWeek[5]) out += "F";
+        else               out += "-";
+
+        if (daysOfWeek[6]) out += "S";
+        else               out += "-";
+
+        if (out.equals("-------"))
+            out = "No specified days";
+
+        return out;
+    }
+
+    protected boolean checkIfInputIsValid( ArrayList<String> messages,
+                                         String startingCity, String startingState, int startingCityRadius,
+                                         String destinationCity, String destinationState, int destinationCityRadius
+    ) {
+        boolean result = true;
+
+        if (!checkExistsCityAndStateID(startingCity, startingState)) {
+            result = false;
+            messages.add("Starting city doesn't exist.");
+        }
+        if (!checkExistsCityAndStateID(destinationCity, destinationState)) {
+            result = false;
+            messages.add("Destination city doesn't exist.");
+        }
+        if (startingCityRadius > 50) {
+            result = false;
+            messages.add("Starting city radius cannot be greater than 50 miles");
+        }
+        if (startingCityRadius < 1) {
+            result = false;
+            messages.add("Starting city radius cannot be less than 1 mile");
+        }
+        if (destinationCityRadius > 50) {
+            result = false;
+            messages.add("Starting city radius cannot be greater than 50 miles");
+        }
+        if (destinationCityRadius < 1) {
+            result = false;
+            messages.add("Destination city radius cannot be less than 1 mile");
+        }
+        return result;
+    }
+
 }
