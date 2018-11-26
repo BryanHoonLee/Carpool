@@ -59,34 +59,4 @@ public class HomeController extends AbstractRouteController {
         return modelAndView;
     }
 
-    private String interpretDaysOfWeek(boolean[] daysOfWeek) {
-        String out = "";
-
-        if (daysOfWeek[0]) out += "S";
-        else               out += "-";
-
-        if (daysOfWeek[1]) out += "M";
-        else               out += "-";
-
-        if (daysOfWeek[2]) out += "T";
-        else               out += "-";
-
-        if (daysOfWeek[3]) out += "W";
-        else               out += "-";
-
-        if (daysOfWeek[4]) out += "T";
-        else               out += "-";
-
-        if (daysOfWeek[5]) out += "F";
-        else               out += "-";
-
-        if (daysOfWeek[6]) out += "S";
-        else               out += "-";
-
-        if (out.equals("-------"))
-            out = "No specified days / All days";
-
-        return out;
-    }
-
 }

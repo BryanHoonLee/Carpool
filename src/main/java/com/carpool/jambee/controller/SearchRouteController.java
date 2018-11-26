@@ -8,10 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class SearchRouteController extends AbstractRouteController {
+
+    class UserDataTemp {
+        public String from;
+        public String to;
+        public String days;
+        public String email;
+        public String number;
+        public String compensation;
+        public String notes;
+    };
 
     @GetMapping("/search")
     public ModelAndView search(ModelAndView modelAndView) {
@@ -19,64 +30,85 @@ public class SearchRouteController extends AbstractRouteController {
         return modelAndView;
     }
 
-    @PostMapping("/search/results")
+    @PostMapping("/search")
     public ModelAndView produceSearchResults(
-        ModelAndView modelAndView
+        ModelAndView modelAndView,
+        String startingCity,
+        String startingState,
+        int    startingCityRadius,
+        String destinationCity,
+        String destinationState,
+        int    destinationCityRadius,
+        String day1, String day2, String day3, String day4,
+        String day5, String day6, String day7
     ) {
-        modelAndView.setViewName("search_results");
+
+        ArrayList<String> messages = new ArrayList<>();
+        ArrayList<UserDataTemp> userDataList = new ArrayList<>();
+        boolean searchResultsAvailable = false;
+        boolean isInputValid = checkIfInputIsValid( messages,
+                startingCity, startingState, startingCityRadius,
+                destinationCity, destinationState, destinationCityRadius);
+        ArrayList<UserData> foundUsers = (ArrayList<UserData>) searchSimilarRoutes(
+                startingCity, destinationCity,
+                startingState, destinationState,
+                milesToKM(startingCityRadius), milesToKM(destinationCityRadius));
+
+        if (!foundUsers.isEmpty()) {
+            searchResultsAvailable = true;
+            for (UserData data : foundUsers) {
+                UserDataTemp newData = interpretUserData(data);
+                userDataList.add(newData);
+            }
+        }
+
+        if (isInputValid) {
+            if (searchResultsAvailable)
+                messages.add("Found routes! Scroll below to see the list.");
+            else {
+                messages.add("Unable to find any routes with your search parameters.");
+                messages.add("Try reversing the starting and destination cities to see if it helps.");
+                messages.add("You can also try increasing the radii around the cities to include more cities.");
+            }
+        }
+
+        modelAndView.addObject("messages", messages);
+        modelAndView.addObject("isSubmit", true);
+        modelAndView.addObject("searchResultsAvailable", searchResultsAvailable);
+        modelAndView.addObject("userDataList", userDataList);
+
+        modelAndView.setViewName("search");
         return modelAndView;
     };
 
-    /*
-                startingCityRadius >= 0 && startingCityRadius <= 80 &&
-                    destinationCityRadius >= 0 && destinationCityRadius <= 80
+    private UserDataTemp interpretUserData(UserData data) {
+        UserDataTemp newData = new UserDataTemp();
 
-            List<Address> startingCities = findByProximity(
-                startingCity, startingState,
-                milesToKM(startingCityRadius));
-            List<Address> destinationCities = findByProximity(
-                destinationCity, destinationState,
-                milesToKM(destinationCityRadius));
+        newData.from = data.getStartingAddress().getCity();
+        newData.from += ", " + data.getStartingAddress().getStateID();
+        newData.to = data.getDestinationAddress().getCity();
+        newData.to += ", " + data.getDestinationAddress().getStateID();
+        newData.days = interpretDaysOfWeek(data.getDaysOfWeek());
+        newData.email = data.getEmail();
+        newData.compensation = data.getPreferredCompensation();
 
-            for (Address city : startingCities) {
-                CityNames temp = new CityNames();
-                temp.starting = city.getCity();
-                cityNames.add(temp);
-            }
-            for (int i = 0; i < destinationCities.size(); i++) {
-                CityNames temp = new CityNames();
-                temp.destination = destinationCities.get(i).getCity();
-                if (i < startingCities.size())
-                    cityNames.get(i).destination = temp.destination;
-                else
-                    cityNames.add(temp);
-            }
+        if (!data.getPhoneNumber().equals(""))
+            newData.number = data.getPhoneNumber();
+        else
+            newData.number = "None provided";
 
+        if (!data.getAdditionalNotes().equals(""))
+            newData.notes = data.getAdditionalNotes();
+        else
+            newData.notes = "No additional notes.";
 
+        return newData;
+    }
 
-
-if (startingCityRadius < 0)
-                messages.add("Starting city radius cannot be less than 0 miles");
-            if (startingCityRadius > 80)
-                messages.add("Starting city radius cannot be more than 80 miles");
-            if (destinationCityRadius < 0)
-                messages.add("Destination city radius cannot be less than 0 miles");
-            if (destinationCityRadius > 80)
-                messages.add("Destination city radius cannot be more than 80 miles");
-
-
-                modelAndView.addObject("citiesNames", cityNames);
-     */
-
-
-    // need to get input from user input from add page
-    @GetMapping("search/test")
-    public List<UserData> searchSimilarRoutes(String startingCity, String destinationCity, String startingStateID,
-                                              String destinationStateID, Double startingRadius, Double destinationRadius){
+    private List<UserData> searchSimilarRoutes(String startingCity, String destinationCity, String startingStateID,
+                                              String destinationStateID, int startingRadius, int destinationRadius) {
         List<Address> startingAddress = findByProximity(startingCity, startingStateID, startingRadius);
         List<Address> destinationAddress = findByProximity(destinationCity, destinationStateID, destinationRadius);
-//        List<Address> startingAddress = findByProximity("Pomona", "CA", 60.0);
-//        List<Address> destinationAddress = findByProximity("Temecula", "CA", 60.0);
 
         List<UserData> userWithSameStartingAddress = this.userDataRepository.findByStartingAddressIn(startingAddress);
         List<UserData> userWithSameDestinationAddress = this.userDataRepository.findByDestinationAddressIn(destinationAddress);

@@ -73,4 +73,11 @@ public class LatLngArea {
     public void setLng4(double lng4) {
         this.lng4 = lng4;
     }
+
+    public void printArea() {
+        System.out.println("{" + lat1 + "," + lng1 + "}");
+        System.out.println("{" + lat2 + "," + lng2 + "}");
+        System.out.println("{" + lat3 + "," + lng3 + "}");
+        System.out.println("{" + lat4 + "," + lng4 + "}");
+    }
 }
