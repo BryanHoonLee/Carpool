@@ -1,4 +1,4 @@
-#Carpool service
+# Jambee Carpool Service (jambee.me)
 
 Jambee is an online carpool service designed for students. The goal is to connect commuters and create opportunities to carpool.
 
