@@ -1,6 +1,9 @@
 package com.carpool.jambee.controller;
 
 import com.carpool.jambee.model.NewUser;
+import com.carpool.jambee.mongodb.model.UserData;
+import com.carpool.jambee.mongodb.repository.UserDataRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +17,9 @@ import java.util.regex.Pattern;
 
 @Controller
 public class UserLoginAndRegisterController {
+
+    @Autowired
+    private UserDataRepository userDataRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -41,6 +47,7 @@ public class UserLoginAndRegisterController {
             Model model,
             //@Valid NewUser newUser) {
             NewUser newUser) {
+        boolean createNewUser = true;
 
         System.out.println(newUser.getFirstName());
         System.out.println(newUser.getLastName());
@@ -56,19 +63,37 @@ public class UserLoginAndRegisterController {
             model.addAttribute("registerError", true);
             model.addAttribute("mismatchedPasswords", true);
             redirectLocation = "register";
+            createNewUser = false;
         }
 
         if (!isValidEmailAddress(newUser.getEmail())) {
             model.addAttribute("registerError", true);
             model.addAttribute("notValidEmail", true);
             redirectLocation = "register";
+            createNewUser = false;
         }
         else {
             if (!isEmailEduAddress(newUser.getEmail())) {
                 model.addAttribute("registerError", true);
                 model.addAttribute("notEduEmail", true);
                 redirectLocation = "register";
+                createNewUser = false;
             }
+        }
+
+        if(userDataRepository.findByEmailEquals(newUser.getEmail()) != null && userDataRepository.findByEmailEquals(newUser.getEmail()).equals(newUser.getEmail())){
+            model.addAttribute("registerError", true);
+            model.addAttribute("notValidEmail", true);
+            redirectLocation = "register";
+            createNewUser = false;
+        }
+
+        if(createNewUser){
+            UserData userData = new UserData(newUser.getFirstName(), newUser.getLastName(),
+                    newUser.getPassword(), null, null, null,
+                    newUser.getEmail(), null, null, null);
+
+            userDataRepository.insert(userData);
         }
 
         return redirectLocation;

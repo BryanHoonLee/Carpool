@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class UserData {
     @Id
     private String id;
+    private String firstName;
+    private String lastName;
+    private String password;
     private Address startingAddress;
     private Address destinationAddress;
     private boolean daysOfWeek[];
@@ -19,8 +22,11 @@ public class UserData {
     public UserData() {
     }
 
-    public UserData(Address startingAddress, Address destinationAddress, boolean[] daysOfWeek, String email, String phoneNumber,
+    public UserData(String firstName, String lastName, String password, Address startingAddress, Address destinationAddress, boolean[] daysOfWeek, String email, String phoneNumber,
                     String additionalNotes, String preferredCompensation) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
         this.startingAddress = startingAddress;
         this.destinationAddress = destinationAddress;
         this.daysOfWeek = daysOfWeek;
@@ -44,6 +50,30 @@ public class UserData {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getId() {
