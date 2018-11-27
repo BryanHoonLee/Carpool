@@ -49,7 +49,7 @@ public class DbSeeder implements CommandLineRunner {
 //        List<UserData> topics = Arrays.asList(userData, userData2);
 //        this.userDataRepository.saveAll(topics);
 
-        this.userDataRepository.deleteAll();
+//        this.userDataRepository.deleteAll();
 
         this.cityDataRepository.deleteAll();
         this.cityDataRepository.saveAll(cityDataList);
