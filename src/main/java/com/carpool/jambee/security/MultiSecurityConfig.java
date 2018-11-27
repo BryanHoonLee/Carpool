@@ -47,23 +47,4 @@ public class MultiSecurityConfig {
         }
     }
 
-    @Configuration
-    public static class TemporaryUsersSecurityConfig extends WebSecurityConfigurerAdapter {
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth.inMemoryAuthentication()
-                    .withUser("user").password("password").roles("USER")
-                    .and()
-                    .withUser("admin").password("password").roles("ADMIN")
-                    .and()
-                    .withUser("anonymousUser").password("password").roles("ADMIN");
-        }
-
-        @SuppressWarnings("deprecation")
-        @Bean
-        public static NoOpPasswordEncoder passwordEncoder() {
-            return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-        }
-    }
-
 }
