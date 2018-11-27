@@ -29,6 +29,12 @@
         </div>
     </div>
 
+    <div class="container" th:if="${justRegistered}">
+        <div class="alert alert-info">
+            <p>Thank you for registering! For now, you may immediately sign in to your new account to try out the functions of our service!</p>
+        </div>
+    </div>
+
     <div th:replace="~{fragments/navbar.html :: navbar}">
     </div>
 

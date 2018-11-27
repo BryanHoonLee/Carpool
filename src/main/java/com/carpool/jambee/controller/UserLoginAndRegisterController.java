@@ -48,7 +48,7 @@ public class UserLoginAndRegisterController {
             NewUser newUser) {
 
         boolean createNewUser = true;
-        String redirectLocation = "register_complete";
+        String redirectLocation = "index";
 
         if (!newUser.doPasswordsMatch()) {
             model.addAttribute("registerError", true);
@@ -88,6 +88,8 @@ public class UserLoginAndRegisterController {
                 null, null, null, null, null, null, null);
 
             userDataRepository.insert(userData);
+
+            model.addAttribute("justRegistered", true);
         }
 
         return redirectLocation;
