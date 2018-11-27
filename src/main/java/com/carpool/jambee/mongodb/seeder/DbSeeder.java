@@ -51,8 +51,8 @@ public class DbSeeder implements CommandLineRunner {
 
 //        this.userDataRepository.deleteAll();
 
-        this.cityDataRepository.deleteAll();
-        this.cityDataRepository.saveAll(cityDataList);
+//        this.cityDataRepository.deleteAll();
+//        this.cityDataRepository.saveAll(cityDataList);
 
     }
 

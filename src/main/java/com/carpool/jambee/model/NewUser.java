@@ -1,5 +1,6 @@
 package com.carpool.jambee.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
@@ -16,23 +17,24 @@ public class NewUser {
 
     @NotNull
     @NotEmpty
-    private String email;
+    private String signupEmail;
 
     @NotNull
     @NotEmpty
     private String password;
     private String matchingPassword;
 
-    BCryptPasswordEncoder BCEncoder;
+    @Autowired
+    BCryptPasswordEncoder encoder;
 
-    public NewUser(String firstName, String lastName, String email, String password, String matchingPassword) {
+    public NewUser(String firstName, String lastName, String signupEmail, String password, String matchingPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.signupEmail= signupEmail;
         this.password = password;
         this.matchingPassword = matchingPassword;
 
-        BCEncoder = new BCryptPasswordEncoder();
+        encoder = new BCryptPasswordEncoder();
     }
 
     public String getFirstName() {
@@ -51,12 +53,12 @@ public class NewUser {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getSignupEmail() {
+        return signupEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSignupEmail(String signupEmail) {
+        this.signupEmail = signupEmail;
     }
 
     public String getPassword() {
@@ -64,15 +66,15 @@ public class NewUser {
     }
 
     public void setPassword(String password) {
-        this.password = BCEncoder.encode(password);
-    }
-
-    public String getMatchingPassword() {
-        return matchingPassword;
+        this.password = encoder.encode(password);
     }
 
     public void setMatchingPassword(String matchingPassword) {
         this.matchingPassword = matchingPassword;
+    }
+
+    public boolean doPasswordsMatch() {
+        return encoder.matches(matchingPassword, password);
     }
 
 }

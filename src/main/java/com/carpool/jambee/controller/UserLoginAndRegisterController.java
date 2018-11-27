@@ -45,35 +45,26 @@ public class UserLoginAndRegisterController {
                  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String registerHandler(
             Model model,
-            //@Valid NewUser newUser) {
             NewUser newUser) {
+
         boolean createNewUser = true;
-
-        System.out.println(newUser.getFirstName());
-        System.out.println(newUser.getLastName());
-        System.out.println(newUser.getEmail());
-        System.out.println(newUser.getPassword());
-        System.out.println(newUser.getMatchingPassword());
-
         String redirectLocation = "register_complete";
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        if (newUser.getPassword().equals(newUser.getMatchingPassword())) {
+        if (!newUser.doPasswordsMatch()) {
             model.addAttribute("registerError", true);
             model.addAttribute("mismatchedPasswords", true);
             redirectLocation = "register";
             createNewUser = false;
         }
 
-        if (!isValidEmailAddress(newUser.getEmail())) {
+        if (!isValidEmailAddress(newUser.getSignupEmail())) {
             model.addAttribute("registerError", true);
             model.addAttribute("notValidEmail", true);
             redirectLocation = "register";
             createNewUser = false;
         }
         else {
-            if (!isEmailEduAddress(newUser.getEmail())) {
+            if (!isEmailEduAddress(newUser.getSignupEmail())) {
                 model.addAttribute("registerError", true);
                 model.addAttribute("notEduEmail", true);
                 redirectLocation = "register";
@@ -81,17 +72,20 @@ public class UserLoginAndRegisterController {
             }
         }
 
-        if(userDataRepository.findByEmailEquals(newUser.getEmail()) != null && userDataRepository.findByEmailEquals(newUser.getEmail()).equals(newUser.getEmail())){
+        if(userDataRepository.findBySignupEmailEquals(newUser.getSignupEmail()) != null &&
+           userDataRepository.findBySignupEmailEquals(newUser.getSignupEmail()).getSignupEmail().equals(newUser.getSignupEmail()))
+        {
             model.addAttribute("registerError", true);
-            model.addAttribute("notValidEmail", true);
+            model.addAttribute("alreadyRegisteredEmail", true);
             redirectLocation = "register";
             createNewUser = false;
         }
 
-        if(createNewUser){
-            UserData userData = new UserData(newUser.getFirstName(), newUser.getLastName(),
-                    newUser.getPassword(), null, null, null,
-                    newUser.getEmail(), null, null, null);
+        if(createNewUser) {
+            UserData userData = new UserData(
+                newUser.getFirstName(), newUser.getLastName(),
+                newUser.getSignupEmail(), newUser.getPassword(),
+                null, null, null, null, null, null, null);
 
             userDataRepository.insert(userData);
         }

@@ -49,6 +49,9 @@
             <p th:if="${notEduEmail}">
                 Sorry. We only support .edu email addresses for now.
             </p>
+            <p th:if="${alreadyRegisteredEmail}">
+                The given email address has already been registered.
+            </p>
         </div>
         <form action="/register" method="POST">
             <div class="form-group">
@@ -56,7 +59,7 @@
                 <input type="text" name="lastName" placeholder="Last Name" class="center expand-80">
             </div>
             <div class="form-group">
-                <input type="text" name="email" placeholder=".edu email address" class="center expand-80">
+                <input type="text" name="signupEmail" placeholder=".edu email address" class="center expand-80">
             </div>
             <div class="form-group">
                 <input type="password" name="password" placeholder="Password" class="center expand-80">

@@ -1,6 +1,5 @@
 package com.carpool.jambee.mongodb.model;
 
-import com.carpool.jambee.model.User;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,12 +7,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class UserData {
     @Id
     private String id;
+    private boolean enabled;
     private String firstName;
     private String lastName;
     private String password;
     private Address startingAddress;
     private Address destinationAddress;
     private boolean daysOfWeek[];
+    private String signupEmail;
     private String email;
     private String phoneNumber;
     private String additionalNotes;
@@ -22,10 +23,14 @@ public class UserData {
     public UserData() {
     }
 
-    public UserData(String firstName, String lastName, String password, Address startingAddress, Address destinationAddress, boolean[] daysOfWeek, String email, String phoneNumber,
+    public UserData(String firstName, String lastName, String signupEmail, String password,
+                    Address startingAddress, Address destinationAddress,
+                    boolean[] daysOfWeek,
+                    String email, String phoneNumber,
                     String additionalNotes, String preferredCompensation) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.signupEmail = signupEmail;
         this.password = password;
         this.startingAddress = startingAddress;
         this.destinationAddress = destinationAddress;
@@ -34,6 +39,8 @@ public class UserData {
         this.phoneNumber = phoneNumber;
         this.additionalNotes = additionalNotes;
         this.preferredCompensation = preferredCompensation;
+
+        this.enabled = true;
     }
 
     @Override
@@ -52,6 +59,14 @@ public class UserData {
         return super.hashCode();
     }
 
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -66,6 +81,14 @@ public class UserData {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getSignupEmail() {
+        return signupEmail;
+    }
+
+    public void setSignupEmail(String signupEmail) {
+        this.signupEmail = signupEmail;
     }
 
     public String getPassword() {

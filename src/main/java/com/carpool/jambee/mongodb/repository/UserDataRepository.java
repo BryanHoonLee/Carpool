@@ -20,7 +20,7 @@ public interface UserDataRepository extends MongoRepository<UserData, String> { 
     // Get a user's data through their ID
     UserData findByIdEquals(String id);
 
-    UserData findByEmailEquals(String email);
+    UserData findBySignupEmailEquals(String signupEmail);
 
     @Query(value = "{'startingAddress.city':?0}, {'startingAddress.state':?1}")
     List<UserData> findByStartingAddress(String city, String state);
